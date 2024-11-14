@@ -1,0 +1,28 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    margin-top: 50px;
+}
+
+h1 {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+}
+
+.basil-photo {
+    width: 40%;
+    max-width: 300px; /* Adjust this value to make the image smaller */
+    height: auto;
+}
+
+p {
+    font-size: 1.2em;
+    margin-top: 20px;
+    color: #333;
+}
