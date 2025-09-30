@@ -1,28 +1,122 @@
-body {
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
+/* =========================
+   Root & Resets
+   ========================= */
+:root {
+  --pad: 20px;
 }
 
-.container {
-    margin-top: 50px;
+html,
+body {
+  margin: 0;
+  height: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* =========================
+   Base Typography & Colors
+   ========================= */
+body {
+  font-family: "New Century Schoolbook", "TeX Gyre Schola", serif;
+  background: #fff;
+  color: #000;
 }
 
 h1 {
-    font-size: 2.5em;
-    margin-bottom: 20px;
-}
-
-.gio-photo {
-    width: 40%;
-    max-width: 300px; /* Adjust this value to make the image smaller */
-    height: auto;
+  margin: 0;
+  font-size: 2.5em;
 }
 
 p {
-    font-size: 1.2em;
-    margin-top: 20px;
-    color: #333;
+  margin: 0;
+  font-size: 1.2em;
+}
+
+a:link,
+a:visited {
+  color: #000;
+}
+
+/* =========================
+   Layout (Pinned to Viewport)
+   ========================= */
+.container {
+  display: flex;
+  height: 100vh;   /* fallback */
+}
+
+/* Upgrade to dynamic viewport units on supported browsers (mobile-safe) */
+@supports (height: 100dvh) {
+  .container {
+    height: 100dvh;
+  }
+}
+
+/* =========================
+   Left Column (Gio photo)
+   ========================= */
+.left {
+  flex: 1;
+  padding: var(--pad);
+  overflow: hidden; /* crop image cleanly within padding */
+}
+
+.gio-photo {
+  display: block;
+  width: 100%;
+  height: calc(100vh - (var(--pad) * 2)); /* fallback */
+  object-fit: cover;
+  object-position: center 10%;
+}
+
+/* Match dynamic viewport height when available */
+@supports (height: 100dvh) {
+  .gio-photo {
+    height: calc(100dvh - (var(--pad) * 2));
+  }
+}
+
+/* =========================
+   Right Column (Text + Grid)
+   ========================= */
+.right {
+  flex: 1;
+  display: flex;             /* stack text + black box vertically */
+  flex-direction: column;
+  padding: var(--pad);
+  gap: 10px;
+  min-height: 0;             /* allow flex children to shrink properly */
+  overflow: auto;            /* scroll internally if text grows */
+}
+
+.whitebox {
+  display: grid;
+  gap: 10px;
+  flex: 0 0 auto;            /* content-sized block */
+}
+
+/* =========================
+   Black Box (fills remainder)
+   ========================= */
+.blackbox {
+  position: relative;
+  flex: 1 1 auto;            /* fill leftover vertical space */
+  min-height: 0;             /* critical for flex overflow control */
+  width: 100%;
+  background: #000;
+  overflow: hidden;          /* clip the grid image to the box */
+  flex-shrink: 1;
+}
+
+/* Grid image fits perfectly */
+.grid-photo {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;         /* fill the box; crop edges if needed */
+  object-position: center;
 }
