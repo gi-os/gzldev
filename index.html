@@ -7,34 +7,32 @@
   <style>
     :root {
       --pad: 20px;
-      --stagger-ms: 45;
-      --fade-ms: 260;
-      --edge-fade: 10%;        /* width of right-edge fade for flowing text */
-      --hover-color: #2a7ae2;  /* glow/color on hover */
+      --stagger-ms: 45;    /* wave speed for the initial fill */
+      --fade-ms: 2600;      /* initial token reveal duration */
+      --hover-color: #6a2548; /* color when “active” (hover/focus) */
+      --base-color: #000;      /* normal color */
     }
 
-    /* Optional custom font: upload font.woff2/font.ttf to your repo root and uncomment
-    
-    */
+    /* ✅ Custom font: place font.ttf (and optional font.woff2) next to this HTML */
     @font-face {
       font-family: "GioCustom";
       src: url("font.woff2") format("woff2"),
            url("font.ttf")   format("truetype");
-      font-weight: 400;
+      font-weight: 400 900;
       font-style: normal;
       font-display: swap;
     }
+
     html, body { margin: 0; height: 100%; }
     *, *::before, *::after { box-sizing: border-box; }
 
     body {
       font-family: "GioCustom", "New Century Schoolbook", "TeX Gyre Schola", serif;
-      /*font-family: "New Century Schoolbook", "TeX Gyre Schola", serif;*/
       background: #fff;
       color: #000;
     }
 
-    /* two columns with exact 20px middle gap */
+    /* Two columns with exact 20px middle gap */
     .container {
       display: flex;
       height: 100vh;
@@ -45,7 +43,7 @@
     .left {
       flex: 1;
       padding: var(--pad);
-      padding-right: 0; /* keep middle gap exactly 20px */
+      padding-right: 0;   /* keep middle gap exactly 20px */
       overflow: hidden;
     }
 
@@ -54,13 +52,13 @@
       display: flex;
       flex-direction: column;
       padding: var(--pad);
-      padding-left: 0; /* keep middle gap exactly 20px */
+      padding-left: 0;    /* keep middle gap exactly 20px */
       gap: 10px;
       min-height: 0;
-      overflow: auto; /* if your whitebox grows, right column scrolls */
+      overflow: auto;     /* scroll if bottom text grows */
     }
 
-    /* left photo respects padding height */
+    /* Left photo respects padding height */
     .gio-photo {
       display: block;
       width: 100%;
@@ -72,31 +70,20 @@
       .gio-photo { height: calc(100dvh - (var(--pad) * 2)); }
     }
 
-    /* flowing names area (fills remaining right-side space) */
+    /* Flowing names area (fills remaining right-side space) */
     .name-fill {
       position: relative;
       flex: 1 1 auto;
       min-height: 0;
-      overflow: hidden;
-
-      /* 10% right-edge fade */
-      -webkit-mask-image: linear-gradient(to right,
-        #000 0%,
-        #000 calc(100% - var(--edge-fade)),
-        transparent 100%);
-      mask-image: linear-gradient(to right,
-        #000 0%,
-        #000 calc(100% - var(--edge-fade)),
-        transparent 100%);
-      -webkit-mask-repeat: no-repeat;
-      -webkit-mask-size: 100% 100%;
+      overflow: hidden;   /* crop to this area */
+      /* (No right-edge mask per your request) */
     }
 
     .tokens {
       position: absolute;
       inset: 0;
       display: flex;
-      flex-direction: column; /* stack generated rows */
+      flex-direction: column;   /* stack generated rows */
       justify-content: flex-start;
       font-weight: 800;
       letter-spacing: 0.02em;
@@ -114,41 +101,32 @@
       display: inline-block;      /* each name is a unit */
       margin-right: 0.5ch;        /* spacing between names */
       opacity: 0;                 /* start hidden (animation reveals) */
+      color: var(--base-color);
       animation: fadeIn var(--fade-ms) cubic-bezier(.2,.8,.2,1) forwards;
 
-      /* Hover/focus glow transition */
-      transition:
-        color 220ms ease,
-        text-shadow 320ms ease,
-        filter 220ms ease;
-      will-change: opacity, color, text-shadow, filter;
+      /* “Trail” effect: fast color on enter, slow color on leave.
+         JS toggles --color-dur between 120ms (enter) and 2600ms (leave). */
+      transition: color var(--color-dur, 300ms) ease;
+      will-change: opacity, color;
       cursor: pointer;
     }
 
-    /* Glow on hover (and keyboard focus) */
-    .token:hover,
-    .token:focus-visible {
-      color: var(--hover-color);
-      text-shadow:
-        0 0 6px  color-mix(in srgb, var(--hover-color) 60%, transparent),
-        0 0 14px color-mix(in srgb, var(--hover-color) 40%, transparent);
-      filter: brightness(1.1);
-      outline: none;
-    }
+    /* Active color (hover/focus) — no glow */
+    .token.active-color { color: var(--hover-color); }
 
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-    /* bottom text block anchored to bottom-right */
+    /* Bottom text anchored bottom-right */
     .whitebox {
       display: grid;
       gap: 8px;
       margin-top: auto;       /* push to bottom */
-      align-self: flex-end;   /* stick to right edge */
+      align-self: flex-end;   /* right edge */
       text-align: right;      /* right-align text */
       max-width: 100%;
     }
     .whitebox p { margin: 0; font-size: 1.05em; }
-    .whitebox a:link, .whitebox a:visited { color: #000; text-decoration: underline; }
+    .whitebox a:link, .whitebox a:visited { color: #6a2548; text-decoration: underline; }
 
     /* Reduced motion */
     @media (prefers-reduced-motion: reduce) {
@@ -163,7 +141,7 @@
     </div>
 
     <div class="right">
-      <!-- Flowing names with right-edge fade and hover glow -->
+      <!-- Flowing names (with color-only trail) -->
       <section class="name-fill" aria-hidden="true">
         <div class="tokens" id="tokens"></div>
       </section>
@@ -179,8 +157,8 @@
   <script>
     (function () {
       const NAME_TEXT = "Giovanni\u00A0Lupo"; // NBSP glues the two words
-      const STAGGER   = parseInt(getComputedStyle(document.documentElement)
-                          .getPropertyValue('--stagger-ms')) || 45;
+      const rootStyles = getComputedStyle(document.documentElement);
+      const STAGGER   = parseInt(rootStyles.getPropertyValue('--stagger-ms')) || 45;
       const MAX_ROWS  = 600;  // safety caps
       const MAX_PER   = 800;
 
@@ -206,13 +184,35 @@
         return { tokenW, lineH, boxW, boxH };
       }
 
+      function attachTrailHandlers(token) {
+        // Trail: quick color-in on enter, slow fade-out on leave
+        token.addEventListener('pointerenter', () => {
+          token.style.setProperty('--color-dur', '120ms');    // fast in
+          token.classList.add('active-color');
+        });
+        token.addEventListener('pointerleave', () => {
+          token.style.setProperty('--color-dur', '2600ms');   // much slower out
+          token.classList.remove('active-color');
+        });
+
+        // Keyboard accessibility mirrors behavior
+        token.addEventListener('focus', () => {
+          token.style.setProperty('--color-dur', '120ms');
+          token.classList.add('active-color');
+        });
+        token.addEventListener('blur', () => {
+          token.style.setProperty('--color-dur', '2600ms');
+          token.classList.remove('active-color');
+        });
+      }
+
       function render() {
         const holder = document.getElementById("tokens");
         holder.innerHTML = "";
 
         const { tokenW, lineH, boxW, boxH } = measure(holder);
 
-        // Number of visible rows (for vertical opacity gradient 1 → 0.01)
+        // Visible rows (for vertical opacity gradient 1 → 0.01)
         const visibleRows = Math.max(1, Math.ceil(boxH / lineH));
         const totalRows   = Math.min(visibleRows + 1, MAX_ROWS); // +1 bleed
 
@@ -241,6 +241,7 @@
             // “Flower out” delay: Manhattan distance from top-left (0,0)
             token.style.animationDelay = `${(r + c) * STAGGER}ms`;
 
+            attachTrailHandlers(token);
             row.appendChild(token);
           }
           frag.appendChild(row);
