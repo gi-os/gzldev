@@ -4,25 +4,254 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Giovanni Lupo</title>
-  <link rel="stylesheet" href="styles.css">
+  <style>
+    :root {
+      --pad: 20px;
+      --stagger-ms: 45;
+      --fade-ms: 260;
+      --edge-fade: 10%;        /* width of right-edge fade for flowing text */
+      --hover-color: #2a7ae2;  /* glow/color on hover */
+    }
+
+    /* Optional custom font: upload font.woff2/font.ttf to your repo root and uncomment
+    @font-face {
+      font-family: "GioCustom";
+      src: url("font.woff2") format("woff2"),
+           url("font.ttf")   format("truetype");
+      font-weight: 400;
+      font-style: normal;
+      font-display: swap;
+    }
+    */
+
+    html, body { margin: 0; height: 100%; }
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      /* font-family: "GioCustom", "New Century Schoolbook", "TeX Gyre Schola", serif; */
+      font-family: "New Century Schoolbook", "TeX Gyre Schola", serif;
+      background: #fff;
+      color: #000;
+    }
+
+    /* two columns with exact 20px middle gap */
+    .container {
+      display: flex;
+      height: 100vh;
+      gap: var(--pad);
+    }
+    @supports (height: 100dvh) { .container { height: 100dvh; } }
+
+    .left {
+      flex: 1;
+      padding: var(--pad);
+      padding-right: 0; /* keep middle gap exactly 20px */
+      overflow: hidden;
+    }
+
+    .right {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: var(--pad);
+      padding-left: 0; /* keep middle gap exactly 20px */
+      gap: 10px;
+      min-height: 0;
+      overflow: auto; /* if your whitebox grows, right column scrolls */
+    }
+
+    /* left photo respects padding height */
+    .gio-photo {
+      display: block;
+      width: 100%;
+      height: calc(100vh - (var(--pad) * 2));
+      object-fit: cover;
+      object-position: center 10%;
+    }
+    @supports (height: 100dvh) {
+      .gio-photo { height: calc(100dvh - (var(--pad) * 2)); }
+    }
+
+    /* flowing names area (fills remaining right-side space) */
+    .name-fill {
+      position: relative;
+      flex: 1 1 auto;
+      min-height: 0;
+      overflow: hidden;
+
+      /* 10% right-edge fade */
+      -webkit-mask-image: linear-gradient(to right,
+        #000 0%,
+        #000 calc(100% - var(--edge-fade)),
+        transparent 100%);
+      mask-image: linear-gradient(to right,
+        #000 0%,
+        #000 calc(100% - var(--edge-fade)),
+        transparent 100%);
+      -webkit-mask-repeat: no-repeat;
+      -webkit-mask-size: 100% 100%;
+    }
+
+    .tokens {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column; /* stack generated rows */
+      justify-content: flex-start;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      font-size: clamp(14px, 2.4vw, 32px);
+      line-height: 1;
+    }
+
+    .row {
+      white-space: nowrap;  /* one line per row */
+      overflow: hidden;     /* crop extra tokens at right edge */
+      /* JS sets per-row opacity (1 → 0.01) for vertical fade */
+    }
+
+    .token {
+      display: inline-block;      /* each name is a unit */
+      margin-right: 0.5ch;        /* spacing between names */
+      opacity: 0;                 /* start hidden (animation reveals) */
+      animation: fadeIn var(--fade-ms) cubic-bezier(.2,.8,.2,1) forwards;
+
+      /* Hover/focus glow transition */
+      transition:
+        color 220ms ease,
+        text-shadow 320ms ease,
+        filter 220ms ease;
+      will-change: opacity, color, text-shadow, filter;
+      cursor: pointer;
+    }
+
+    /* Glow on hover (and keyboard focus) */
+    .token:hover,
+    .token:focus-visible {
+      color: var(--hover-color);
+      text-shadow:
+        0 0 6px  color-mix(in srgb, var(--hover-color) 60%, transparent),
+        0 0 14px color-mix(in srgb, var(--hover-color) 40%, transparent);
+      filter: brightness(1.1);
+      outline: none;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    /* bottom text block anchored to bottom-right */
+    .whitebox {
+      display: grid;
+      gap: 8px;
+      margin-top: auto;       /* push to bottom */
+      align-self: flex-end;   /* stick to right edge */
+      text-align: right;      /* right-align text */
+      max-width: 100%;
+    }
+    .whitebox p { margin: 0; font-size: 1.05em; }
+    .whitebox a:link, .whitebox a:visited { color: #000; text-decoration: underline; }
+
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      .token { animation: none; opacity: 1; }
+    }
+  </style>
 </head>
 <body>
   <div class="container">
     <div class="left">
-      <img src="pfp.png" alt="It's me!" class="gio-photo">
+      <img src="https://gi-os.github.io/gzldev/pfp.png" alt="It's me!" class="gio-photo">
     </div>
 
     <div class="right">
-      <div class="whitebox">
-        <h1>Giovanni Lupo</h1>
-        <p>Hi, I'm a Computer Engineer working at LR Paris.</p>
-        <p>Here is my <a href="resume.pdf">Resume</a>, and here is my <a href="https://www.linkedin.com/in/giovanni-lupo/">LinkedIn</a></p>
-      </div>
+      <!-- Flowing names with right-edge fade and hover glow -->
+      <section class="name-fill" aria-hidden="true">
+        <div class="tokens" id="tokens"></div>
+      </section>
 
-      <div class="blackbox">
-        <img src="grid.png" alt="A grid." class="grid-photo">
+      <!-- Bottom-right text -->
+      <div class="whitebox">
+        <p>Hi, I'm a Computer Engineer working at LR Paris.</p>
+        <p>Here is my <a href="https://gi-os.github.io/gzldev/resume.pdf">Resume</a>, and here is my <a href="https://www.linkedin.com/in/giovanni-lupo/">LinkedIn</a></p>
       </div>
     </div>
   </div>
+
+  <script>
+    (function () {
+      const NAME_TEXT = "Giovanni\u00A0Lupo"; // NBSP glues the two words
+      const STAGGER   = parseInt(getComputedStyle(document.documentElement)
+                          .getPropertyValue('--stagger-ms')) || 45;
+      const MAX_ROWS  = 600;  // safety caps
+      const MAX_PER   = 800;
+
+      function measure(holder) {
+        holder.innerHTML = "";
+        const probeRow = document.createElement("div");
+        probeRow.className = "row";
+        const probe = document.createElement("span");
+        probe.className = "token";
+        probe.textContent = NAME_TEXT;
+        probe.style.animation = "none"; // avoid anim during measure
+        probeRow.appendChild(probe);
+        holder.appendChild(probeRow);
+
+        const styles = getComputedStyle(probe);
+        const mr = parseFloat(styles.marginRight) || 0;
+        const tokenW = probe.getBoundingClientRect().width + mr || 1;
+        const lineH  = probeRow.getBoundingClientRect().height || 1;
+        const boxW   = holder.clientWidth  || 1;
+        const boxH   = holder.clientHeight || 1;
+
+        holder.innerHTML = "";
+        return { tokenW, lineH, boxW, boxH };
+      }
+
+      function render() {
+        const holder = document.getElementById("tokens");
+        holder.innerHTML = "";
+
+        const { tokenW, lineH, boxW, boxH } = measure(holder);
+
+        // Number of visible rows (for vertical opacity gradient 1 → 0.01)
+        const visibleRows = Math.max(1, Math.ceil(boxH / lineH));
+        const totalRows   = Math.min(visibleRows + 1, MAX_ROWS); // +1 bleed
+
+        // Tokens per row: enough to overflow horizontally (+2 bleed)
+        const perRow = Math.min(Math.ceil(boxW / tokenW) + 2, MAX_PER);
+
+        const frag = document.createDocumentFragment();
+
+        for (let r = 0; r < totalRows; r++) {
+          const row = document.createElement("div");
+          row.className = "row";
+
+          // Vertical opacity gradient (top 1 → bottom ~0.01)
+          const t = (visibleRows === 1) ? 0 : Math.min(r, visibleRows - 1) / (visibleRows - 1);
+          const minOp = 0.01, maxOp = 1.0;
+          row.style.opacity = (maxOp - (maxOp - minOp) * t).toFixed(3);
+
+          for (let c = 0; c < perRow; c++) {
+            const token = document.createElement("span");
+            token.className = "token";
+            token.textContent = NAME_TEXT;
+
+            // Make tokens keyboard-focusable for accessibility
+            token.tabIndex = 0;
+
+            // “Flower out” delay: Manhattan distance from top-left (0,0)
+            token.style.animationDelay = `${(r + c) * STAGGER}ms`;
+
+            row.appendChild(token);
+          }
+          frag.appendChild(row);
+        }
+
+        holder.appendChild(frag);
+      }
+
+      addEventListener("DOMContentLoaded", render, { passive: true });
+      addEventListener("resize", render, { passive: true });
+    })();
+  </script>
 </body>
 </html>
