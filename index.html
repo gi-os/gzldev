@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blog | Giovanni Lupo</title>
+  <style>
+    :root {
+      --pad: 20px;
+      --hover-color: #6a2548;
+      --base-color: #000;
+    }
+
+    @font-face {
+      font-family: "GioCustom";
+      src: url("../acidic.woff2") format("woff2"),
+           url("../acidic.ttf")   format("truetype");
+      font-weight: 400 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    html, body { margin: 0; min-height: 100%; }
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: "GioCustom", "New Century Schoolbook", "TeX Gyre Schola", serif;
+      background: #fff;
+      color: #000;
+      padding: var(--pad);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    h1 {
+      font-size: clamp(24px, 4vw, 42px);
+      font-weight: 800;
+      margin: 0;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+      font-size: 1em;
+    }
+
+    nav a {
+      color: var(--base-color);
+      text-decoration: none;
+      transition: color 200ms ease;
+    }
+    nav a:hover { color: var(--hover-color); }
+
+    /* Blog list view */
+    .posts-list {
+      max-width: 720px;
+    }
+
+    .post-item {
+      padding: 24px 0;
+      border-bottom: 1px solid #eee;
+      opacity: 0;
+      animation: fadeIn 600ms ease forwards;
+    }
+    .post-item:first-child { padding-top: 0; }
+    .post-item:last-child { border-bottom: none; }
+
+    .post-date {
+      font-size: 0.85em;
+      opacity: 0.6;
+      margin-bottom: 6px;
+    }
+
+    .post-title {
+      font-size: 1.4em;
+      font-weight: 800;
+      margin-bottom: 8px;
+    }
+
+    .post-title a {
+      color: var(--base-color);
+      text-decoration: none;
+      transition: color 200ms ease;
+    }
+    .post-title a:hover { color: var(--hover-color); }
+
+    .post-excerpt {
+      font-size: 0.95em;
+      line-height: 1.6;
+      opacity: 0.85;
+      margin-bottom: 12px;
+    }
+
+    .post-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .post-tag {
+      font-size: 0.75em;
+      padding: 3px 10px;
+      background: #f5f5f5;
+      border-radius: 2px;
+    }
+
+    /* Single post view */
+    .post-content {
+      max-width: 720px;
+      display: none;
+    }
+
+    .post-content.active {
+      display: block;
+    }
+
+    .back-link {
+      display: inline-block;
+      margin-bottom: 24px;
+      color: var(--hover-color);
+      text-decoration: none;
+      font-size: 0.9em;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    .post-header {
+      margin-bottom: 32px;
+    }
+
+    .post-header h2 {
+      font-size: clamp(1.5em, 4vw, 2.2em);
+      font-weight: 800;
+      margin: 0 0 12px 0;
+      line-height: 1.2;
+    }
+
+    .post-meta {
+      font-size: 0.9em;
+      opacity: 0.6;
+    }
+
+    .post-body {
+      font-size: 1.05em;
+      line-height: 1.7;
+    }
+
+    .post-body h1, .post-body h2, .post-body h3 {
+      margin-top: 1.5em;
+      margin-bottom: 0.5em;
+      font-weight: 700;
+    }
+
+    .post-body p { margin: 1em 0; }
+
+    .post-body code {
+      background: #f5f5f5;
+      padding: 2px 6px;
+      font-size: 0.9em;
+      font-family: "SF Mono", "Consolas", monospace;
+    }
+
+    .post-body pre {
+      background: #1a1a1a;
+      color: #f5f5f5;
+      padding: 16px;
+      overflow-x: auto;
+      font-size: 0.85em;
+      line-height: 1.5;
+    }
+
+    .post-body pre code {
+      background: none;
+      padding: 0;
+      color: inherit;
+    }
+
+    .post-body a {
+      color: var(--hover-color);
+    }
+
+    .post-body img {
+      max-width: 100%;
+      height: auto;
+    }
+
+    .post-body blockquote {
+      border-left: 3px solid var(--hover-color);
+      margin: 1.5em 0;
+      padding-left: 1em;
+      opacity: 0.85;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      opacity: 0.6;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .post-item { animation: none; opacity: 1; }
+    }
+  </style>
+  <!-- Marked.js for Markdown rendering -->
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>Blog</h1>
+    <nav>
+      <a href="../">Home</a>
+      <a href="../books/">Bookshelf</a>
+      <a href="../projects/">Projects</a>
+    </nav>
+  </header>
+
+  <div class="posts-list" id="posts-list"></div>
+  <div class="post-content" id="post-content"></div>
+  <div class="empty-state" id="empty-state" style="display:none;">No posts yet. Add some to posts.json!</div>
+
+  <script>
+    let allPosts = [];
+
+    async function loadPosts() {
+      try {
+        const res = await fetch('posts.json');
+        allPosts = await res.json();
+        
+        // Check URL hash for direct post link
+        const hash = window.location.hash.slice(1);
+        if (hash) {
+          showPost(hash);
+        } else {
+          renderList();
+        }
+      } catch (e) {
+        console.error('Failed to load posts:', e);
+        document.getElementById('empty-state').style.display = 'block';
+      }
+    }
+
+    function formatDate(dateStr) {
+      const d = new Date(dateStr);
+      return d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+    }
+
+    function renderList() {
+      const list = document.getElementById('posts-list');
+      const content = document.getElementById('post-content');
+      const empty = document.getElementById('empty-state');
+
+      content.classList.remove('active');
+      list.style.display = 'block';
+
+      if (allPosts.length === 0) {
+        list.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+      }
+
+      empty.style.display = 'none';
+
+      // Sort by date desc
+      const sorted = [...allPosts].sort((a, b) => 
+        new Date(b.date) - new Date(a.date)
+      );
+
+      list.innerHTML = sorted.map((p, i) => `
+        <article class="post-item" style="animation-delay: ${i * 80}ms">
+          <div class="post-date">${formatDate(p.date)}</div>
+          <h2 class="post-title">
+            <a href="#${p.slug}" onclick="showPost('${p.slug}'); return false;">${p.title}</a>
+          </h2>
+          ${p.excerpt ? `<p class="post-excerpt">${p.excerpt}</p>` : ''}
+          ${p.tags?.length ? `
+            <div class="post-tags">
+              ${p.tags.map(t => `<span class="post-tag">${t}</span>`).join('')}
+            </div>
+          ` : ''}
+        </article>
+      `).join('');
+    }
+
+    async function showPost(slug) {
+      const post = allPosts.find(p => p.slug === slug);
+      if (!post) {
+        renderList();
+        return;
+      }
+
+      const list = document.getElementById('posts-list');
+      const content = document.getElementById('post-content');
+
+      list.style.display = 'none';
+      content.classList.add('active');
+
+      // Update URL
+      history.pushState(null, '', `#${slug}`);
+
+      // Try to load markdown file
+      let body = '';
+      try {
+        const res = await fetch(`posts/${slug}.md`);
+        if (res.ok) {
+          const md = await res.text();
+          body = marked.parse(md);
+        } else {
+          body = '<p>Post content not found.</p>';
+        }
+      } catch (e) {
+        body = '<p>Failed to load post.</p>';
+      }
+
+      content.innerHTML = `
+        <a href="#" class="back-link" onclick="goBack(); return false;">← Back to all posts</a>
+        <div class="post-header">
+          <h2>${post.title}</h2>
+          <div class="post-meta">${formatDate(post.date)}</div>
+        </div>
+        <div class="post-body">${body}</div>
+      `;
+    }
+
+    function goBack() {
+      history.pushState(null, '', window.location.pathname);
+      renderList();
+    }
+
+    // Handle browser back/forward
+    window.addEventListener('popstate', () => {
+      const hash = window.location.hash.slice(1);
+      if (hash) {
+        showPost(hash);
+      } else {
+        renderList();
+      }
+    });
+
+    loadPosts();
+  </script>
+</body>
+</html>
