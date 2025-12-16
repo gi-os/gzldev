@@ -83,11 +83,25 @@
       color: #fff;
     }
 
+    /* Year sections */
+    .year-section {
+      margin-bottom: 48px;
+    }
+
+    .year-header {
+      font-size: 1.8em;
+      font-weight: 800;
+      margin-bottom: 24px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--base-color);
+    }
+
     /* Book grid */
     .books-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
       gap: 32px;
+      margin-bottom: 32px;
     }
 
     .book {
@@ -176,11 +190,12 @@
     <button class="filter-btn" data-filter="want-to-read">Want to Read</button>
   </div>
 
-  <div class="books-grid" id="books-grid"></div>
+  <div id="books-container"></div>
   <div class="empty-state" id="empty-state" style="display:none;">No books yet. Add some to books.json!</div>
 
   <script>
-    const OPEN_LIBRARY_COVER = (isbn) => `https://covers.openlibrary.org/b/isbn/${isbn}-M.jpg`;
+    // Use large covers from Open Library
+    const OPEN_LIBRARY_COVER = (isbn) => `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
 
     let allBooks = [];
     let currentFilter = 'all';
@@ -197,7 +212,7 @@
     }
 
     function renderBooks() {
-      const grid = document.getElementById('books-grid');
+      const container = document.getElementById('books-container');
       const empty = document.getElementById('empty-state');
       
       const filtered = currentFilter === 'all' 
@@ -205,34 +220,99 @@
         : allBooks.filter(b => b.status === currentFilter);
 
       if (filtered.length === 0) {
-        grid.innerHTML = '';
+        container.innerHTML = '';
         empty.style.display = 'block';
         return;
       }
 
       empty.style.display = 'none';
-      grid.innerHTML = filtered.map((book, i) => {
-        const cover = book.cover || (book.isbn ? OPEN_LIBRARY_COVER(book.isbn) : '');
-        const stars = book.rating ? '★'.repeat(book.rating) + '☆'.repeat(5 - book.rating) : '';
-        const statusLabel = book.status?.replace(/-/g, ' ') || '';
-        
-        return `
-          <div class="book" style="animation-delay: ${i * 50}ms">
-            <img 
-              class="book-cover" 
-              src="${cover}" 
-              alt="${book.title}"
-              onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 2 3%22><rect fill=%22%23f0f0f0%22 width=%222%22 height=%223%22/><text x=%221%22 y=%221.8%22 font-size=%22.3%22 text-anchor=%22middle%22 fill=%22%23999%22>No Cover</text></svg>'"
-            >
-            <div class="book-info">
-              <div class="book-title">${book.title}</div>
-              <div class="book-author">${book.author}</div>
-              ${stars ? `<div class="book-rating">${stars}</div>` : ''}
-              ${statusLabel ? `<span class="book-status ${book.status}">${statusLabel}</span>` : ''}
-            </div>
+
+      // Group finished books by year, keep others ungrouped
+      const finishedByYear = {};
+      const currentlyReading = [];
+      const wantToRead = [];
+
+      filtered.forEach(book => {
+        if (book.status === 'finished' && book.yearRead) {
+          if (!finishedByYear[book.yearRead]) {
+            finishedByYear[book.yearRead] = [];
+          }
+          finishedByYear[book.yearRead].push(book);
+        } else if (book.status === 'reading') {
+          currentlyReading.push(book);
+        } else if (book.status === 'want-to-read') {
+          wantToRead.push(book);
+        } else if (book.status === 'finished') {
+          // Finished books without year
+          if (!finishedByYear['Unknown']) {
+            finishedByYear['Unknown'] = [];
+          }
+          finishedByYear['Unknown'].push(book);
+        }
+      });
+
+      let html = '';
+      let animationDelay = 0;
+
+      // Currently Reading
+      if (currentlyReading.length > 0) {
+        html += '<div class="year-section"><h2 class="year-header">Currently Reading</h2><div class="books-grid">';
+        currentlyReading.forEach(book => {
+          html += renderBook(book, animationDelay);
+          animationDelay += 50;
+        });
+        html += '</div></div>';
+      }
+
+      // Finished by Year (newest first)
+      const years = Object.keys(finishedByYear).sort((a, b) => {
+        if (a === 'Unknown') return 1;
+        if (b === 'Unknown') return -1;
+        return b - a;
+      });
+
+      years.forEach(year => {
+        html += `<div class="year-section"><h2 class="year-header">${year}</h2><div class="books-grid">`;
+        finishedByYear[year].forEach(book => {
+          html += renderBook(book, animationDelay);
+          animationDelay += 50;
+        });
+        html += '</div></div>';
+      });
+
+      // Want to Read
+      if (wantToRead.length > 0) {
+        html += '<div class="year-section"><h2 class="year-header">Want to Read</h2><div class="books-grid">';
+        wantToRead.forEach(book => {
+          html += renderBook(book, animationDelay);
+          animationDelay += 50;
+        });
+        html += '</div></div>';
+      }
+
+      container.innerHTML = html;
+    }
+
+    function renderBook(book, delay) {
+      const cover = book.cover || (book.isbn ? OPEN_LIBRARY_COVER(book.isbn) : '');
+      const stars = book.rating ? '★'.repeat(book.rating) + '☆'.repeat(5 - book.rating) : '';
+      const statusLabel = book.status?.replace(/-/g, ' ') || '';
+      
+      return `
+        <div class="book" style="animation-delay: ${delay}ms">
+          <img 
+            class="book-cover" 
+            src="${cover}" 
+            alt="${book.title}"
+            onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 2 3%22><rect fill=%22%23f0f0f0%22 width=%222%22 height=%223%22/><text x=%221%22 y=%221.8%22 font-size=%22.3%22 text-anchor=%22middle%22 fill=%22%23999%22>No Cover</text></svg>'"
+          >
+          <div class="book-info">
+            <div class="book-title">${book.title}</div>
+            <div class="book-author">${book.author}</div>
+            ${stars ? `<div class="book-rating">${stars}</div>` : ''}
           </div>
-        `;
-      }).join('');
+        </div>
+      `;
     }
 
     // Filter buttons
