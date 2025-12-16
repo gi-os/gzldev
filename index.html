@@ -1,111 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-  <link rel="manifest" href="/site.webmanifest">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Giovanni Lupo</title>
+
   <style>
     :root {
       --pad: 20px;
-      --stagger-ms: 25;    /* faster wave speed */
-      --fade-ms: 1800;      /* faster initial reveal */
-      --hover-color: #6a2548; /* back to purple */
-      --base-color: #000;      /* normal color */
+      --stagger-ms: 45;
+      --fade-ms: 2600;
+      --hover-color: #6a2548;
+      --base-color: #000;
     }
 
-    /* ✅ Custom font: place font.ttf (and optional font.woff2) next to this HTML */
     @font-face {
       font-family: "GioCustom";
-      src: url("acidic.woff2") format("woff2"),
-           url("acidic.ttf")   format("truetype");
+      src: url("font.woff2") format("woff2"),
+           url("font.ttf") format("truetype");
       font-weight: 400 900;
       font-style: normal;
       font-display: swap;
     }
 
-    html, body { margin: 0; height: 100%; }
-    *, *::before, *::after { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      height: 100%;
+    }
 
     body {
-      font-family: "GioCustom", "New Century Schoolbook", "TeX Gyre Schola", serif;
+      font-family: "GioCustom", "New Century Schoolbook", serif;
       background: #fff;
       color: #000;
-    }
 
-    /* Two columns with exact 20px middle gap */
-    .container {
-      display: flex;
+      /* 🔑 Grid layout: header auto, content fills rest */
+      display: grid;
+      grid-template-rows: auto 1fr;
       height: 100vh;
-      gap: var(--pad);
-    }
-    @supports (height: 100dvh) { .container { height: 100dvh; } }
-
-    .left {
-      flex: 1;
-      padding: var(--pad);
-      padding-right: 0;   /* keep middle gap exactly 20px */
-      overflow: hidden;
     }
 
-    .right {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      padding: var(--pad);
-      padding-left: 0;    /* keep middle gap exactly 20px */
-      gap: 10px;
-      min-height: 0;
-      overflow: auto;     /* scroll if bottom text grows */
-    }
-
-    /* Left photo respects padding height */
-    .gio-photo {
-      display: block;
-      width: 100%;
-      height: calc(100vh - (var(--pad) * 2));
-      object-fit: cover;
-      object-position: center 10%;
-    }
     @supports (height: 100dvh) {
-      .gio-photo { height: calc(100dvh - (var(--pad) * 2)); }
+      body { height: 100dvh; }
     }
 
-    /* Top navigation */
-    .top-nav {
+    /* ---------- HEADER ---------- */
+
+    header {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			padding: var(--pad);
+			padding-bottom: 0;   /* ✅ prevent double padding */
+			gap: 20px;
+			flex-wrap: wrap;
+		}
+
+
+    h1 {
+      margin: 0;
+      font-size: clamp(24px, 4vw, 42px);
+      font-weight: 800;
+    }
+
+    nav {
       display: flex;
       gap: 20px;
       font-size: 1em;
-      margin-bottom: 10px;
     }
 
-    .top-nav a {
+    nav a {
       color: var(--base-color);
       text-decoration: none;
       transition: color 200ms ease;
     }
-    .top-nav a:hover {
+
+    nav a:hover {
       color: var(--hover-color);
     }
 
-    /* Flowing names area (fills remaining right-side space) */
+    /* ---------- MAIN CONTAINER ---------- */
+
+    .container {
+      display: flex;
+      gap: var(--pad);
+      min-height: 0; /* 🔑 allow children to size correctly */
+    }
+
+    .left,
+    .right {
+      flex: 1;
+      min-height: 0;
+    }
+
+    .left {
+      padding: var(--pad);
+      padding-right: 0;
+    }
+
+    .right {
+      display: flex;
+      flex-direction: column;
+      padding: var(--pad);
+      padding-left: 0;
+      gap: 10px;
+      overflow: hidden;
+    }
+
+    /* ---------- IMAGE ---------- */
+
+    .gio-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 10%;
+      display: block;
+    }
+
+    /* ---------- NAME FILL ---------- */
+
     .name-fill {
       position: relative;
-      flex: 1 1 auto;
+      flex: 1;
       min-height: 0;
-      overflow: hidden;   /* crop to this area */
-      /* (No right-edge mask per your request) */
+      overflow: hidden;
     }
 
     .tokens {
       position: absolute;
       inset: 0;
       display: flex;
-      flex-direction: column;   /* stack generated rows */
-      justify-content: flex-start;
+      flex-direction: column;
       font-weight: 800;
       letter-spacing: 0.02em;
       font-size: clamp(14px, 2.4vw, 32px);
@@ -113,332 +141,165 @@
     }
 
     .row {
-      white-space: nowrap;  /* one line per row */
-      overflow: hidden;     /* crop extra tokens at right edge */
-      /* JS sets per-row opacity (1 → 0.01) for vertical fade */
+      white-space: nowrap;
+      overflow: hidden;
     }
 
     .token {
-      display: inline-block;      /* each name is a unit */
-      margin-right: 0.5ch;        /* spacing between names */
-      color: var(--base-color);
-
-      /* "Trail" effect: fast color on enter, slow color on leave.
-         Twinkle uses same transition for smooth color changes */
-      transition: color var(--color-dur, 300ms) ease;
-      will-change: color;
-      cursor: pointer;
-    }
-
-    /* Individual word spans that fade in */
-    .word {
       display: inline-block;
+      margin-right: 0.5ch;
       opacity: 0;
+      color: var(--base-color);
       animation: fadeIn var(--fade-ms) cubic-bezier(.2,.8,.2,1) forwards;
+      transition: color var(--color-dur, 300ms) ease;
+      cursor: pointer;
+      will-change: opacity, color;
     }
 
-    /* Once animated, keep visible and stop animating */
-    .word.animated {
-      opacity: 1;
-      animation: none;
+    .token.active-color {
+      color: var(--hover-color);
     }
 
-    /* Active color (hover/focus/twinkle) — no glow */
-    .token.active-color { color: var(--hover-color); }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
 
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    /* ---------- BOTTOM TEXT ---------- */
 
-    /* Bottom text anchored bottom-right */
     .whitebox {
+      margin-top: auto;
+      text-align: right;
       display: grid;
       gap: 8px;
-      margin-top: auto;       /* push to bottom */
-      align-self: flex-end;   /* right edge */
-      text-align: right;      /* right-align text */
-      max-width: 100%;
     }
-    .whitebox p { margin: 0; font-size: 1.05em; }
-    .whitebox a:link, .whitebox a:visited { color: #6a2548; text-decoration: none; }
 
-    /* Reduced motion */
+    .whitebox p {
+      margin: 0;
+      font-size: 1.05em;
+    }
+
+    .whitebox a {
+      color: #6a2548;
+      text-decoration: underline;
+    }
+
     @media (prefers-reduced-motion: reduce) {
-      .word { animation: none; opacity: 1; }
+      .token {
+        animation: none;
+        opacity: 1;
+      }
     }
   </style>
 </head>
+
 <body>
+
+  <header>
+    <h1>Welcome</h1>
+    <nav>
+      <a href="../books/">Bookshelf</a>
+      <a href="../projects/">Projects</a>
+      <a href="../blog/">Blog</a>
+    </nav>
+  </header>
+
   <div class="container">
     <div class="left">
-      <img src="https://gi-os.github.io/gzldev/pfp.png" alt="It's me!" class="gio-photo">
+      <img
+        src="https://gi-os.github.io/gzldev/pfp.png"
+        alt="It's me!"
+        class="gio-photo"
+      >
     </div>
 
     <div class="right">
-      <!-- Top navigation -->
-      <nav class="top-nav">
-        <a href="projects/">Projects</a>
-        <a href="books/">Bookshelf</a>
-        <a href="blog/">Blog</a>
-      </nav>
-
-      <!-- Flowing names (with color-only trail) -->
       <section class="name-fill" aria-hidden="true">
         <div class="tokens" id="tokens"></div>
       </section>
 
-      <!-- Bottom-right text -->
       <div class="whitebox">
         <p>Hi, I'm a Computer Engineer working at LR Paris.</p>
-        <p>Here is my <a href="https://gi-os.github.io/gzldev/resume.pdf">Resume</a>, and here is my <a href="https://www.linkedin.com/in/giovanni-lupo/">LinkedIn</a></p>
+        <p>
+          Here is my
+          <a href="https://gi-os.github.io/gzldev/resume.pdf">Resume</a>,
+          and my
+          <a href="https://www.linkedin.com/in/giovanni-lupo/">LinkedIn</a>
+        </p>
       </div>
     </div>
   </div>
 
   <script>
     (function () {
-      const WORDS = ["Giovanni", "Lupo"]; // Split into individual words
+      const NAME_TEXT = "Giovanni\u00A0Lupo";
       const rootStyles = getComputedStyle(document.documentElement);
-      const STAGGER   = parseInt(rootStyles.getPropertyValue('--stagger-ms')) || 25;
-      const MAX_ROWS  = 600;  // safety caps
-      const MAX_PER   = 800;
-      let hasAnimated = false; // Track if initial animation has run
-      let allTokens = []; // Store all token elements for twinkle effect
-      let tokenGrid = []; // 2D grid to track token positions
-      let twinkleInterval = null;
+      const STAGGER = parseInt(rootStyles.getPropertyValue('--stagger-ms')) || 45;
 
       function measure(holder) {
         holder.innerHTML = "";
-        const probeRow = document.createElement("div");
-        probeRow.className = "row";
-        const probe = document.createElement("span");
-        probe.className = "token";
-        
-        // Create word spans for measurement
-        WORDS.forEach(word => {
-          const wordSpan = document.createElement("span");
-          wordSpan.className = "word animated"; // Use animated state for measurement
-          wordSpan.textContent = word;
-          probe.appendChild(wordSpan);
-          probe.appendChild(document.createTextNode(" ")); // Space between words
-        });
-        
-        probeRow.appendChild(probe);
-        holder.appendChild(probeRow);
+        const row = document.createElement("div");
+        row.className = "row";
+        const token = document.createElement("span");
+        token.className = "token";
+        token.textContent = NAME_TEXT;
+        token.style.animation = "none";
+        row.appendChild(token);
+        holder.appendChild(row);
 
-        const styles = getComputedStyle(probe);
-        const mr = parseFloat(styles.marginRight) || 0;
-        const tokenW = probe.getBoundingClientRect().width + mr || 1;
-        const lineH  = probeRow.getBoundingClientRect().height || 1;
-        const boxW   = holder.clientWidth  || 1;
-        const boxH   = holder.clientHeight || 1;
+        const tokenW = token.getBoundingClientRect().width;
+        const lineH = row.getBoundingClientRect().height;
+        const boxW = holder.clientWidth;
+        const boxH = holder.clientHeight;
 
         holder.innerHTML = "";
         return { tokenW, lineH, boxW, boxH };
       }
 
-      function attachTrailHandlers(token) {
-        // Trail: quick color-in on enter, slow fade-out on leave
-        token.addEventListener('pointerenter', () => {
-          token.style.setProperty('--color-dur', '120ms');    // fast in
-          token.classList.add('active-color');
-          token.dataset.userHover = 'true'; // Mark as user-hovered
+      function attach(token) {
+        token.addEventListener("pointerenter", () => {
+          token.style.setProperty("--color-dur", "120ms");
+          token.classList.add("active-color");
         });
-        token.addEventListener('pointerleave', () => {
-          token.style.setProperty('--color-dur', '2600ms');   // much slower out
-          token.classList.remove('active-color');
-          delete token.dataset.userHover; // Clear hover flag
+        token.addEventListener("pointerleave", () => {
+          token.style.setProperty("--color-dur", "2600ms");
+          token.classList.remove("active-color");
         });
-
-        // Keyboard accessibility mirrors behavior
-        token.addEventListener('focus', () => {
-          token.style.setProperty('--color-dur', '120ms');
-          token.classList.add('active-color');
-          token.dataset.userHover = 'true';
-        });
-        token.addEventListener('blur', () => {
-          token.style.setProperty('--color-dur', '2600ms');
-          token.classList.remove('active-color');
-          delete token.dataset.userHover;
-        });
-      }
-
-      function getNeighbors(row, col) {
-        const neighbors = [];
-        // Check all 4 directions: up, down, left, right
-        const directions = [
-          [-1, 0],  // up
-          [1, 0],   // down
-          [0, -1],  // left
-          [0, 1]    // right
-        ];
-        
-        directions.forEach(([dr, dc]) => {
-          const newRow = row + dr;
-          const newCol = col + dc;
-          if (tokenGrid[newRow] && tokenGrid[newRow][newCol]) {
-            neighbors.push(tokenGrid[newRow][newCol]);
-          }
-        });
-        
-        return neighbors;
-      }
-
-      function isNeighborActive(row, col) {
-        const neighbors = getNeighbors(row, col);
-        return neighbors.some(token => token.classList.contains('active-color'));
-      }
-
-      function twinkleSingle() {
-        // Try up to 20 times to find a valid token
-        for (let attempt = 0; attempt < 20; attempt++) {
-          const randomIndex = Math.floor(Math.random() * allTokens.length);
-          const randomToken = allTokens[randomIndex];
-          
-          // Skip if user is hovering over this token
-          if (randomToken && randomToken.dataset.userHover) {
-            continue;
-          }
-          
-          // Get row and col from stored data
-          const row = parseInt(randomToken.dataset.row);
-          const col = parseInt(randomToken.dataset.col);
-          
-          // Skip if any neighbor is currently active
-          if (isNeighborActive(row, col)) {
-            continue;
-          }
-          
-          if (randomToken) {
-            // Fast fade in (200ms)
-            randomToken.style.setProperty('--color-dur', '200ms');
-            randomToken.classList.add('active-color');
-            
-            // Stay at full brightness for 3 seconds, then slow fade out
-            setTimeout(() => {
-              if (!randomToken.dataset.userHover) {
-                randomToken.style.setProperty('--color-dur', '4000ms'); // Very slow fade out
-                randomToken.classList.remove('active-color');
-              }
-            }, 3000); // Hold for 3 seconds
-            
-            return; // Successfully started a twinkle
-          }
-        }
-      }
-
-      function startTwinkle() {
-        // Clear existing interval if any
-        if (twinkleInterval) clearTimeout(twinkleInterval);
-
-        // Start 2-3 overlapping twinkles immediately
-        const initialTwinkles = 2 + Math.floor(Math.random() * 2); // 2 or 3
-        for (let i = 0; i < initialTwinkles; i++) {
-          setTimeout(twinkleSingle, i * 800); // Stagger initial twinkles by 800ms
-        }
-
-        // Continue triggering new twinkles at random intervals
-        function scheduleNext() {
-          const delay = 1500 + Math.random() * 2000; // Random 1.5-3.5s between new twinkles
-          twinkleInterval = setTimeout(() => {
-            twinkleSingle();
-            scheduleNext(); // Schedule the next one
-          }, delay);
-        }
-        
-        scheduleNext();
       }
 
       function render() {
         const holder = document.getElementById("tokens");
         holder.innerHTML = "";
-        allTokens = []; // Reset tokens array
-        tokenGrid = []; // Reset grid
 
         const { tokenW, lineH, boxW, boxH } = measure(holder);
-
-        // Visible rows (for vertical opacity gradient 1 → 0.01)
-        const visibleRows = Math.max(1, Math.ceil(boxH / lineH));
-        const totalRows   = Math.min(visibleRows + 1, MAX_ROWS); // +1 bleed
-
-        // Tokens per row: enough to overflow horizontally (+2 bleed)
-        const perRow = Math.min(Math.ceil(boxW / tokenW) + 2, MAX_PER);
+        const rows = Math.ceil(boxH / lineH);
+        const cols = Math.ceil(boxW / tokenW) + 2;
 
         const frag = document.createDocumentFragment();
-        let maxDelay = 0; // Track max animation delay
 
-        for (let r = 0; r < totalRows; r++) {
+        for (let r = 0; r < rows; r++) {
           const row = document.createElement("div");
           row.className = "row";
-          tokenGrid[r] = []; // Initialize row in grid
+          row.style.opacity = (1 - r / rows).toFixed(2);
 
-          // Vertical opacity gradient (top 1 → bottom ~0.01)
-          const t = (visibleRows === 1) ? 0 : Math.min(r, visibleRows - 1) / (visibleRows - 1);
-          const minOp = 0.01, maxOp = 1.0;
-          row.style.opacity = (maxOp - (maxOp - minOp) * t).toFixed(3);
-
-          for (let c = 0; c < perRow; c++) {
+          for (let c = 0; c < cols; c++) {
             const token = document.createElement("span");
             token.className = "token";
-            
-            // Store position data for neighbor checking
-            token.dataset.row = r;
-            token.dataset.col = c;
-
-            // Calculate diagonal position for this token
-            // Each token occupies WORDS.length word-slots in the diagonal
-            const tokenDiagonalPosition = (r + c) * WORDS.length;
-
-            // Create individual word spans with staggered delays
-            WORDS.forEach((word, wordIdx) => {
-              const wordSpan = document.createElement("span");
-              wordSpan.className = "word";
-              
-              // If already animated, mark as such (no animation on resize)
-              if (hasAnimated) {
-                wordSpan.classList.add("animated");
-              } else {
-                // Each word gets its position in the global diagonal sequence
-                const wordDiagonalPosition = tokenDiagonalPosition + wordIdx;
-                const delay = wordDiagonalPosition * STAGGER;
-                wordSpan.style.animationDelay = `${delay}ms`;
-                maxDelay = Math.max(maxDelay, delay);
-              }
-              
-              wordSpan.textContent = word;
-              token.appendChild(wordSpan);
-              
-              // Add space between words (but not after last word)
-              if (wordIdx < WORDS.length - 1) {
-                token.appendChild(document.createTextNode(" "));
-              }
-            });
-
-            // Make tokens keyboard-focusable for accessibility
-            token.tabIndex = 0;
-
-            attachTrailHandlers(token);
-            allTokens.push(token); // Store for twinkle effect
-            tokenGrid[r][c] = token; // Store in grid for neighbor lookup
+            token.textContent = NAME_TEXT;
+            token.style.animationDelay = `${(r + c) * STAGGER}ms`;
+            attach(token);
             row.appendChild(token);
           }
           frag.appendChild(row);
         }
 
         holder.appendChild(frag);
-        
-        // Mark as animated after first render
-        if (!hasAnimated) {
-          hasAnimated = true;
-          // Start twinkle effect after initial animation completes
-          setTimeout(startTwinkle, maxDelay + 2000);
-        } else {
-          // Restart twinkle on resize
-          startTwinkle();
-        }
       }
 
-      addEventListener("DOMContentLoaded", render, { passive: true });
-      addEventListener("resize", render, { passive: true });
+      window.addEventListener("DOMContentLoaded", render);
+      window.addEventListener("resize", render);
     })();
   </script>
+
 </body>
 </html>
