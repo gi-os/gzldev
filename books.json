@@ -1,0 +1,46 @@
+[
+  {
+    "title": "Designing Data-Intensive Applications",
+    "author": "Martin Kleppmann",
+    "isbn": "1449373321",
+    "rating": 5,
+    "status": "finished",
+    "dateRead": "2025-01",
+    "notes": "Essential for system design interviews"
+  },
+  {
+    "title": "The Pragmatic Programmer",
+    "author": "David Thomas & Andrew Hunt",
+    "isbn": "0135957052",
+    "rating": 5,
+    "status": "finished",
+    "dateRead": "2024-11"
+  },
+  {
+    "title": "Atomic Habits",
+    "author": "James Clear",
+    "isbn": "0735211299",
+    "rating": 4,
+    "status": "finished",
+    "dateRead": "2024-09"
+  },
+  {
+    "title": "The Mom Test",
+    "author": "Rob Fitzpatrick",
+    "isbn": "1492180742",
+    "rating": 5,
+    "status": "reading"
+  },
+  {
+    "title": "Staff Engineer",
+    "author": "Will Larson",
+    "isbn": "1736417916",
+    "status": "want-to-read"
+  },
+  {
+    "title": "Build",
+    "author": "Tony Fadell",
+    "isbn": "0063046067",
+    "status": "want-to-read"
+  }
+]

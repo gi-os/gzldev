@@ -1,0 +1,23 @@
+[
+  {
+    "slug": "building-basilnet",
+    "title": "Building BasilNet: My Home Server Stack",
+    "date": "2025-01-10",
+    "tags": ["Docker", "homelab", "self-hosting"],
+    "excerpt": "How I built a 15-service media server with Docker Compose, Gluetun VPN, and Home Assistant integrations."
+  },
+  {
+    "slug": "home-assistant-media-player",
+    "title": "Custom Media Player Dashboard in Home Assistant",
+    "date": "2024-12-15",
+    "tags": ["Home Assistant", "automation"],
+    "excerpt": "Creating a wall-mounted display that shows weather and switches to album art when music plays."
+  },
+  {
+    "slug": "hydroponics-iot",
+    "title": "IoT Hydroponics: Automating My Indoor Farm",
+    "date": "2024-11-20",
+    "tags": ["ESP32", "IoT", "hydroponics"],
+    "excerpt": "Using ESP32 microcontrollers to monitor pH, EC, and automate nutrient dosing."
+  }
+]

@@ -1,0 +1,46 @@
+[
+  {
+    "name": "BasilNet",
+    "description": "Docker-based home media server stack with 15+ services including Plex, Sonarr, Radarr, qBittorrent with Gluetun VPN, and Home Assistant integrations.",
+    "tags": ["Docker", "Home Assistant", "Linux", "Networking"],
+    "image": "images/basilnet.png",
+    "github": "https://github.com/gi-os/basilnet",
+    "featured": true,
+    "date": "2024"
+  },
+  {
+    "name": "Hydroponic Farm Controller",
+    "description": "Automated hydroponic system with ESP32 microcontrollers, pH/EC sensors, and a custom React dashboard for monitoring plant health.",
+    "tags": ["ESP32", "React", "IoT", "Hardware"],
+    "github": "https://github.com/gi-os/hydro-controller",
+    "featured": true,
+    "date": "2024"
+  },
+  {
+    "name": "AI Health Monitor",
+    "description": "Patent-pending AI-powered health monitoring system using computer vision and machine learning for early symptom detection.",
+    "tags": ["Python", "TensorFlow", "Computer Vision", "Healthcare"],
+    "featured": true,
+    "date": "2023"
+  },
+  {
+    "name": "LR Paris Sales Tools",
+    "description": "Internal proposal generation tools and HubSpot/Asana integrations for luxury corporate gifting workflows.",
+    "tags": ["JavaScript", "HubSpot API", "Asana API"],
+    "date": "2025"
+  },
+  {
+    "name": "Custom Film Camera",
+    "description": "3D-printed medium format camera with custom electronics and exposure metering system.",
+    "tags": ["3D Printing", "Electronics", "Photography"],
+    "github": "https://github.com/gi-os/film-camera",
+    "date": "2023"
+  },
+  {
+    "name": "June Virtual Secretary",
+    "description": "AI-powered virtual assistant for scheduling and task management, built with Node.js and natural language processing.",
+    "tags": ["Node.js", "NLP", "AI"],
+    "github": "https://github.com/gi-os/June4",
+    "date": "2022"
+  }
+]
