@@ -4,7 +4,7 @@
     "author": "William Gibson",
     "isbn": "0425198685",
     "status": "finished",
-    "yearRead": 2024,
+    "yearRead": 2025,
     "series": "Blue Ant, Book 1"
   },
   {
@@ -12,7 +12,7 @@
     "author": "William Gibson",
     "isbn": "0441569595",
     "status": "finished",
-    "yearRead": 2024,
+    "yearRead": 2025,
     "series": "Sprawl Trilogy, Book 1"
   },
   {
@@ -27,7 +27,7 @@
     "author": "Haruki Murakami",
     "isbn": "0679775439",
     "status": "finished",
-    "yearRead": 2024
+    "yearRead": 2025
   },
   {
     "title": "We Are Legion (We Are Bob)",
@@ -58,7 +58,7 @@
     "author": "Haruki Murakami",
     "isbn": "0307476464",
     "status": "finished",
-    "yearRead": 2024
+    "yearRead": 2025
   },
   {
     "title": "I'm Glad My Mom Died",
@@ -68,11 +68,18 @@
     "yearRead": 2023
   },
   {
+    "title": "Project Hail Mary",
+    "author": "Andy Weir",
+    "isbn": "0593135229",
+    "status": "finished",
+    "yearRead": 2024
+  },
+  {
     "title": "Kafka on the Shore",
     "author": "Haruki Murakami",
     "isbn": "1400079276",
     "status": "finished",
-    "yearRead": 2024
+    "yearRead": 2025
   },
   {
     "title": "Norwegian Wood",
