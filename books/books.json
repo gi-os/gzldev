@@ -19,15 +19,15 @@
     "title": "The Three-Body Problem",
     "author": "Cixin Liu",
     "isbn": "0765382032",
-    "status": "want-to-read"
+    "status": "want-to-read",
     "series": "Remembrance of Earth's Past, Book 1"
   },
   {
     "title": "The Wind-Up Bird Chronicle",
     "author": "Haruki Murakami",
     "isbn": "0679775439",
-    "yearRead": 2024,
-    "status": "finished"
+    "status": "finished",
+    "yearRead": 2024
   },
   {
     "title": "We Are Legion (We Are Bob)",
@@ -57,29 +57,28 @@
     "title": "1Q84",
     "author": "Haruki Murakami",
     "isbn": "0307476464",
-    "yearRead": 2024,
-    "status": "finished"
+    "status": "finished",
+    "yearRead": 2024
   },
   {
     "title": "I'm Glad My Mom Died",
     "author": "Jennette McCurdy",
     "isbn": "1982185821",
-    "yearRead": 2023,
-    "status": "finished"
+    "status": "finished",
+    "yearRead": 2023
   },
   {
     "title": "Kafka on the Shore",
     "author": "Haruki Murakami",
     "isbn": "1400079276",
-    "yearRead": 2024,
-    "status": "finished"
+    "status": "finished",
+    "yearRead": 2024
   },
   {
     "title": "Norwegian Wood",
     "author": "Haruki Murakami",
     "isbn": "0375704027",
     "status": "want-to-read"
-    
   },
   {
     "title": "The Elegant Universe",
