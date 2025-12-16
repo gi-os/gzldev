@@ -70,6 +70,23 @@
       .gio-photo { height: calc(100dvh - (var(--pad) * 2)); }
     }
 
+    /* Top navigation */
+    .top-nav {
+      display: flex;
+      gap: 20px;
+      font-size: 1em;
+      margin-bottom: 10px;
+    }
+
+    .top-nav a {
+      color: var(--base-color);
+      text-decoration: none;
+      transition: color 200ms ease;
+    }
+    .top-nav a:hover {
+      color: var(--hover-color);
+    }
+
     /* Flowing names area (fills remaining right-side space) */
     .name-fill {
       position: relative;
@@ -152,6 +169,13 @@
     </div>
 
     <div class="right">
+      <!-- Top navigation -->
+      <nav class="top-nav">
+        <a href="projects/">Projects</a>
+        <a href="books/">Bookshelf</a>
+        <a href="blog/">Blog</a>
+      </nav>
+
       <!-- Flowing names (with color-only trail) -->
       <section class="name-fill" aria-hidden="true">
         <div class="tokens" id="tokens"></div>
