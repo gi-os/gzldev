@@ -1,46 +1,98 @@
 [
   {
-    "title": "Designing Data-Intensive Applications",
-    "author": "Martin Kleppmann",
-    "isbn": "1449373321",
-    "rating": 5,
+    "title": "Pattern Recognition",
+    "author": "William Gibson",
+    "isbn": "0425198685",
     "status": "finished",
-    "dateRead": "2025-01",
-    "notes": "Essential for system design interviews"
+    "series": "Blue Ant, Book 1"
   },
   {
-    "title": "The Pragmatic Programmer",
-    "author": "David Thomas & Andrew Hunt",
-    "isbn": "0135957052",
-    "rating": 5,
-    "status": "finished",
-    "dateRead": "2024-11"
+    "title": "Neuromancer",
+    "author": "William Gibson",
+    "isbn": "0441569595",
+    "status": "reading",
+    "series": "Sprawl Trilogy, Book 1"
   },
   {
-    "title": "Atomic Habits",
-    "author": "James Clear",
-    "isbn": "0735211299",
-    "rating": 4,
-    "status": "finished",
-    "dateRead": "2024-09"
+    "title": "The Three-Body Problem",
+    "author": "Cixin Liu",
+    "isbn": "0765382032",
+    "status": "reading",
+    "series": "Remembrance of Earth's Past, Book 1"
   },
   {
-    "title": "The Mom Test",
-    "author": "Rob Fitzpatrick",
-    "isbn": "1492180742",
-    "rating": 5,
+    "title": "The Wind-Up Bird Chronicle",
+    "author": "Haruki Murakami",
+    "isbn": "0679775439",
     "status": "reading"
   },
   {
-    "title": "Staff Engineer",
-    "author": "Will Larson",
-    "isbn": "1736417916",
+    "title": "We Are Legion (We Are Bob)",
+    "author": "Dennis E. Taylor",
+    "isbn": "1680680587",
+    "status": "finished",
+    "series": "Bobiverse, Book 1"
+  },
+  {
+    "title": "For We Are Many",
+    "author": "Dennis E. Taylor",
+    "isbn": "1680680595",
+    "status": "reading",
+    "series": "Bobiverse, Book 2"
+  },
+  {
+    "title": "All These Worlds",
+    "author": "Dennis E. Taylor",
+    "isbn": "1680680609",
+    "status": "want-to-read",
+    "series": "Bobiverse, Book 3"
+  },
+  {
+    "title": "1Q84",
+    "author": "Haruki Murakami",
+    "isbn": "0307476464",
     "status": "want-to-read"
   },
   {
-    "title": "Build",
-    "author": "Tony Fadell",
-    "isbn": "0063046067",
+    "title": "I'm Glad My Mom Died",
+    "author": "Jennette McCurdy",
+    "isbn": "1982185821",
     "status": "want-to-read"
+  },
+  {
+    "title": "Kafka on the Shore",
+    "author": "Haruki Murakami",
+    "isbn": "1400079276",
+    "status": "want-to-read"
+  },
+  {
+    "title": "Norwegian Wood",
+    "author": "Haruki Murakami",
+    "isbn": "0375704027",
+    "status": "finished"
+  },
+  {
+    "title": "The Elegant Universe",
+    "author": "Brian Greene",
+    "isbn": "039333810X",
+    "status": "finished"
+  },
+  {
+    "title": "Stories of Your Life and Others",
+    "author": "Ted Chiang",
+    "isbn": "1101972120",
+    "status": "finished"
+  },
+  {
+    "title": "House of Leaves",
+    "author": "Mark Z. Danielewski",
+    "isbn": "0375703764",
+    "status": "finished"
+  },
+  {
+    "title": "Snow Crash",
+    "author": "Neal Stephenson",
+    "isbn": "0553380958",
+    "status": "finished"
   }
 ]
