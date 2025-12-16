@@ -4,95 +4,107 @@
     "author": "William Gibson",
     "isbn": "0425198685",
     "status": "finished",
+    "yearRead": 2024,
     "series": "Blue Ant, Book 1"
   },
   {
     "title": "Neuromancer",
     "author": "William Gibson",
     "isbn": "0441569595",
-    "status": "reading",
+    "status": "finished",
+    "yearRead": 2024,
     "series": "Sprawl Trilogy, Book 1"
   },
   {
     "title": "The Three-Body Problem",
     "author": "Cixin Liu",
     "isbn": "0765382032",
-    "status": "reading",
+    "status": "want-to-read",
+    "yearRead": 2024,
     "series": "Remembrance of Earth's Past, Book 1"
   },
   {
     "title": "The Wind-Up Bird Chronicle",
     "author": "Haruki Murakami",
     "isbn": "0679775439",
-    "status": "reading"
+    "yearRead": 2024,
+    "status": "finished"
   },
   {
     "title": "We Are Legion (We Are Bob)",
     "author": "Dennis E. Taylor",
     "isbn": "1680680587",
     "status": "finished",
+    "yearRead": 2025,
     "series": "Bobiverse, Book 1"
   },
   {
     "title": "For We Are Many",
     "author": "Dennis E. Taylor",
     "isbn": "1680680595",
-    "status": "reading",
+    "status": "finished",
+    "yearRead": 2025,
     "series": "Bobiverse, Book 2"
   },
   {
     "title": "All These Worlds",
     "author": "Dennis E. Taylor",
     "isbn": "1680680609",
-    "status": "want-to-read",
+    "status": "finished",
+    "yearRead": 2025,
     "series": "Bobiverse, Book 3"
   },
   {
     "title": "1Q84",
     "author": "Haruki Murakami",
     "isbn": "0307476464",
-    "status": "want-to-read"
+    "yearRead": 2024,
+    "status": "finished"
   },
   {
     "title": "I'm Glad My Mom Died",
     "author": "Jennette McCurdy",
     "isbn": "1982185821",
-    "status": "want-to-read"
+    "yearRead": 2023,
+    "status": "finished"
   },
   {
     "title": "Kafka on the Shore",
     "author": "Haruki Murakami",
     "isbn": "1400079276",
-    "status": "want-to-read"
+    "yearRead": 2024,
+    "status": "finished"
   },
   {
     "title": "Norwegian Wood",
     "author": "Haruki Murakami",
     "isbn": "0375704027",
-    "status": "finished"
+    "status": "want-to-read"
+    
   },
   {
     "title": "The Elegant Universe",
     "author": "Brian Greene",
     "isbn": "039333810X",
-    "status": "finished"
+    "status": "want-to-read"
   },
   {
     "title": "Stories of Your Life and Others",
     "author": "Ted Chiang",
     "isbn": "1101972120",
-    "status": "finished"
+    "status": "want-to-read"
   },
   {
     "title": "House of Leaves",
     "author": "Mark Z. Danielewski",
     "isbn": "0375703764",
-    "status": "finished"
+    "status": "reading",
+    "yearRead": 2025
   },
   {
     "title": "Snow Crash",
     "author": "Neal Stephenson",
     "isbn": "0553380958",
-    "status": "finished"
+    "status": "reading"
   }
 ]
