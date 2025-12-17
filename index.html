@@ -82,7 +82,7 @@
 		
 		/*font-family: "GioCustom", "New Century Schoolbook", serif;*/
 		font-size: 20px;         /* starting point */
-		line-height: 1.05;
+		line-height: 0.7;
 		
 		/*white-space: pre;*/
 		overflow: hidden;       /* hard clip */
@@ -388,7 +388,7 @@ function renderAscii() {
   el.innerHTML = '';
   const W = el.clientWidth;
   const cell = W / COLS;
-  const fontSize = cell * 2.8; // tweak multiplier as needed
+  const fontSize = cell * 3.2; // tweak multiplier as needed
   
   el.style.gridTemplateColumns = `repeat(${COLS}, ${cell}px)`;
   
