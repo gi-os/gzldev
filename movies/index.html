@@ -100,10 +100,41 @@
       box-shadow: 0 8px 24px rgba(0,0,0,0.25);
     }
 
-    .film-info { margin-top: 12px; }
-    .film-title { font-weight: 700; font-size: 0.95em; line-height: 1.3; margin-bottom: 4px; }
+    .film-info { 
+      margin-top: 12px;
+      display: grid;
+      grid-template-rows: auto auto auto auto auto;
+      gap: 0;
+    }
+
+    .film-title { 
+      font-weight: 700; 
+      font-size: 0.95em; 
+      line-height: 1.3; 
+      margin-bottom: 4px;
+      height: 1.3em;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .film-title-inner {
+      white-space: nowrap;
+      display: inline-block;
+    }
+
+    .film-title-inner.scrolling {
+      animation: scroll-title 10s linear infinite;
+    }
+
+    @keyframes scroll-title {
+  0%, 10% { transform: translateX(0); }
+  45% { transform: translateX(calc(-100% + 160px)); }
+  55%, 65% { transform: translateX(calc(-100% + 160px)); }
+  100% { transform: translateX(0); }
+}
+
     .film-year { font-size: 0.85em; opacity: 0.6; }
-    .film-rating { margin-top: 6px; font-size: 0.85em; color: var(--hover-color); }
+    .film-rating { margin-top: 6px; font-size: 1.2em; color: var(--hover-color); }
     .film-review { margin-top: 8px; font-size: 0.8em; line-height: 1.4; opacity: 0.8; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     .film-date { font-size: 0.75em; opacity: 0.5; margin-top: 4px; }
 
@@ -115,6 +146,7 @@
     @media (prefers-reduced-motion: reduce) {
       .film { animation: none; opacity: 1; }
       .film-poster { transition: none; }
+      .film-title-inner { animation: none !important; }
     }
   </style>
 </head>
@@ -176,7 +208,9 @@
                   onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 2 3%22><rect fill=%22%231a1a1a%22 width=%222%22 height=%223%22/><text x=%221%22 y=%221.8%22 font-size=%22.25%22 text-anchor=%22middle%22 fill=%22%23666%22>No Poster</text></svg>'">
               </a>
               <div class="film-info">
-                <div class="film-title">${title}</div>
+                <div class="film-title">
+                  <span class="film-title-inner">${title}</span>
+                </div>
                 <div class="film-year">${year}</div>
                 ${stars ? `<div class="film-rating">${stars}</div>` : ''}
                 ${review ? `<div class="film-review">${review}</div>` : ''}
@@ -187,6 +221,15 @@
         });
 
         container.innerHTML = html;
+        
+        // Detect which titles need scrolling
+        document.querySelectorAll('.film-title').forEach(titleEl => {
+          const inner = titleEl.querySelector('.film-title-inner');
+          if (inner.scrollWidth > titleEl.clientWidth) {
+            inner.classList.add('scrolling');
+          }
+        });
+        
       } catch (e) {
         console.error('Failed to load RSS:', e);
         container.innerHTML = '<div class="error">Failed to load films</div>';
