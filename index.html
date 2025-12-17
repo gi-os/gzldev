@@ -379,28 +379,36 @@ XXXXXXXXXXXX+X&X&&&&&&&+X&X:+:+:::: :  :       :  : : :  :+:::: :::   ++ ++X&X+&
 		
     const el = document.getElementById('art');
 const COLS = 112;
+const STAGGER = 45;  // ms between cells
+const FADE_MS = 2600;
 
 function renderAscii() {
   el.innerHTML = '';
   const W = el.clientWidth;
   const cell = W / COLS;
-  const fontSize = cell * 3.2; // tweak multiplier as needed
+  const fontSize = cell * 3.2;
   
   el.style.gridTemplateColumns = `repeat(${COLS}, ${cell}px)`;
   
+  let row = 0;
   a.split('\n').forEach(r => {
-    r.slice(0, COLS).split('').forEach(c => {
+    const line = r.slice(0, COLS);
+    for (let col = 0; col < COLS; col++) {
       const s = document.createElement('span');
       s.style.fontSize = fontSize + 'px';
-      s.textContent = c === ' ' ? '\u00A0' : c;
+      s.style.opacity = '0';
+      s.style.animation = `fadeIn ${FADE_MS}ms cubic-bezier(.2,.8,.2,1) forwards`;
+      // Top-right start: lower col index = higher delay
+      s.style.animationDelay = `${(row + (COLS - col)) * STAGGER}ms`;
+      s.textContent = line[col] === ' ' || !line[col] ? '\u00A0' : line[col];
       el.appendChild(s);
-    });
+    }
+    row++;
   });
 }
 
 window.addEventListener('DOMContentLoaded', renderAscii);
 window.addEventListener('resize', renderAscii);
-  
   </script>
   <script>
     (function () {
