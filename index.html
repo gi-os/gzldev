@@ -6,6 +6,11 @@
   <title>Giovanni Lupo</title>
 
   <style>
+		.header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
     :root {
       --pad: 20px;
       --stagger-ms: 45;
@@ -151,28 +156,39 @@
 
     /* ---------- NAME FILL ---------- */
 
-   .side-nav {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: flex-end;
-  gap: 2rem;
-}
+    .name-fill {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
 
-.side-nav a {
-  font-size: clamp(24px, 4vw, 48px);
-  font-weight: 800;
-  color: var(--base-color);
-  text-decoration: none;
-  opacity: 0;
-  animation: fadeIn 1.5s ease forwards;
-  transition: color 200ms ease;
-}
+    .tokens {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      font-size: clamp(14px, 2.4vw, 32px);
+      line-height: 1;
+    }
 
-.side-nav a:hover {
-  color: var(--hover-color);
-}
+    .row {
+      white-space: nowrap;
+      overflow: hidden;
+    }
+
+    .token {
+      display: inline-block;
+      margin-right: 0.5ch;
+      opacity: 0;
+      color: var(--base-color);
+      animation: fadeIn var(--fade-ms) cubic-bezier(.2,.8,.2,1) forwards;
+      transition: color var(--color-dur, 300ms) ease;
+      cursor: pointer;
+      will-change: opacity, color;
+    }
 
     .token.active-color {
       color: var(--hover-color);
@@ -201,7 +217,7 @@
       color: #6a2548;
       text-decoration: underline;
     }
-
+		
     @media (prefers-reduced-motion: reduce) {
       .token {
         animation: none;
@@ -213,27 +229,25 @@
 
 <body>
 
-  
-
   <div class="container">
     <div class="left">
 		<div class="ascii" id="art"></div>
     </div>
 
     <div class="right">
-      <div class="right">
-  <nav class="side-nav">
-		<h1>Hi, I'm Giovanni Lupo</h1>
-		<h1></h1>
-    <a href="../books/" style="animation-delay: 0ms">Bookshelf</a>
-    <a href="../projects/" style="animation-delay: 150ms">Projects</a>
-    <a href="../blog/" style="animation-delay: 300ms">Blog</a>
-		<a href="../about/" style="animation-delay: 300ms">About</a>
-  </nav>
-
-  
+      <section class="name-fill" aria-hidden="true">
+        <div class="tokens" id="tokens"></div>
+      </section>
+			
+      <div class="header-row">
+    <h1>Welcome</h1>
+    <nav>
+      <a href="../books/">Bookshelf</a>
+      <a href="../projects/">Projects</a>
+      <a href="../blog/">Blog</a>
+    </nav>
   </div>
-</div>
+  
     </div>
   </div>
 	<script>
