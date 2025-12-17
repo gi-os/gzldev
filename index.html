@@ -227,21 +227,21 @@
 
     /* ---------- MOBILE LAYOUT ---------- */
     /* Lines 227-241, replace the mobile media query section with: */
+/* Lines 227-248, replace the mobile media query section with: */
 @media (max-width: 768px) {
-  body {
-    grid-template-rows: 3fr 2fr;
-  }
-
   .container {
     flex-direction: column;
+    height: 100%;
   }
 
   .left {
+    flex: 2;
     padding: var(--pad);
     padding-bottom: 0;
   }
 
   .right {
+    flex: 1;
     padding: var(--pad);
     padding-top: 0;
   }
