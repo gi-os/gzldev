@@ -227,31 +227,32 @@
 
     /* ---------- MOBILE LAYOUT ---------- */
     @media (max-width: 768px) {
-      .container {
-        flex-direction: column;
-      }
+  .container {
+    flex-direction: column;
+  }
 
-      .left {
-        padding: var(--pad);
-        padding-bottom: 0;
-        min-height: 40vh;
-      }
+  .left {
+    padding: var(--pad);
+    padding-bottom: 0;
+    min-height: 40vh;
+  }
 
-      .right {
-        padding: var(--pad);
-        padding-top: 0;
-      }
+  .right {
+    padding: var(--pad);
+    padding-top: 0;
+  }
 
-      .header-row {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 12px;
-      }
+  .header-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
 
-      nav {
-        flex-wrap: wrap;
-      }
-    }
+  nav {
+    font-size: clamp(0.7em, 3vw, 1em);
+    gap: clamp(8px, 2vw, 20px);
+  }
+}
   </style>
 </head>
 
