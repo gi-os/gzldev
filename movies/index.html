@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Films | Giovanni Lupo</title>
+  <style>
+    :root {
+      --pad: 20px;
+      --hover-color: #ff8000;
+      --base-color: #000;
+    }
+
+    @font-face {
+      font-family: "GioCustom";
+      src: url("../acidic.woff2") format("woff2"),
+           url("../acidic.ttf")   format("truetype");
+      font-weight: 400 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    html, body { margin: 0; min-height: 100%; }
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: "GioCustom", "New Century Schoolbook", "TeX Gyre Schola", serif;
+      background: #fff;
+      color: #000;
+      padding: var(--pad);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    h1 {
+      font-size: clamp(24px, 4vw, 42px);
+      font-weight: 800;
+      margin: 0;
+    }
+
+    h1 a {
+      color: inherit;
+      text-decoration: none;
+      transition: color 200ms ease;
+    }
+    h1 a:hover { color: var(--hover-color); }
+
+    nav {
+      display: flex;
+      gap: 20px;
+      font-size: 1em;
+    }
+
+    nav a {
+      color: var(--base-color);
+      text-decoration: none;
+      transition: color 200ms ease;
+    }
+    nav a:hover { color: var(--hover-color); }
+
+    .films-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 24px;
+    }
+
+    .film {
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      animation: fadeIn 600ms ease forwards;
+    }
+
+    .film a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .film-poster {
+      width: 100%;
+      aspect-ratio: 2/3;
+      object-fit: cover;
+      background: #1a1a1a;
+      border-radius: 4px;
+      transition: transform 200ms ease, box-shadow 200ms ease;
+    }
+    .film:hover .film-poster {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    }
+
+    .film-info { margin-top: 12px; }
+    .film-title { font-weight: 700; font-size: 0.95em; line-height: 1.3; margin-bottom: 4px; }
+    .film-year { font-size: 0.85em; opacity: 0.6; }
+    .film-rating { margin-top: 6px; font-size: 0.85em; color: var(--hover-color); }
+    .film-review { margin-top: 8px; font-size: 0.8em; line-height: 1.4; opacity: 0.8; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .film-date { font-size: 0.75em; opacity: 0.5; margin-top: 4px; }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .loading, .error { text-align: center; padding: 60px 20px; opacity: 0.6; }
+    .error { color: #c00; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .film { animation: none; opacity: 1; }
+      .film-poster { transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1><a href="https://letterboxd.com/mycatbasil" target="_blank">Letterboxd</a></h1>
+    <nav>
+      <a href="../">Home</a>
+      <a href="../books/">Bookshelf</a>
+      <a href="../blog/">Project Blog</a>
+			<a href="../about/">About Me</a>
+    </nav>
+  </header>
+
+  <div class="films-grid" id="films">
+    <div class="loading">Loading...</div>
+  </div>
+
+  <script>
+    const USERNAME = 'mycatbasil';
+    const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+    const RSS_URL = `https://letterboxd.com/${USERNAME}/rss/`;
+
+    async function loadFilms() {
+      const container = document.getElementById('films');
+      
+      try {
+        const res = await fetch(CORS_PROXY + encodeURIComponent(RSS_URL));
+        const text = await res.text();
+        const parser = new DOMParser();
+        const xml = parser.parseFromString(text, 'text/xml');
+        const items = xml.querySelectorAll('item');
+        
+        if (items.length === 0) {
+          container.innerHTML = '<div class="loading">No films found</div>';
+          return;
+        }
+
+        let html = '';
+        items.forEach((item, i) => {
+          const title = item.querySelector('letterboxd\\:filmTitle, filmTitle')?.textContent || 
+                       item.querySelector('title')?.textContent?.replace(/ - ★.*$/, '') || 'Unknown';
+          const year = item.querySelector('letterboxd\\:filmYear, filmYear')?.textContent || '';
+          const rating = parseFloat(item.querySelector('letterboxd\\:memberRating, memberRating')?.textContent) || 0;
+          const review = item.querySelector('description')?.textContent?.replace(/<[^>]*>/g, '').trim() || '';
+          const watchedDate = item.querySelector('letterboxd\\:watchedDate, watchedDate')?.textContent || '';
+          const link = item.querySelector('link')?.textContent || '#';
+          
+          const desc = item.querySelector('description')?.textContent || '';
+          const posterMatch = desc.match(/src="([^"]+)"/);
+          const poster = posterMatch ? posterMatch[1].replace('0-150-0-225', '0-500-0-750') : '';
+
+          const stars = rating ? '★'.repeat(Math.floor(rating)) + (rating % 1 ? '½' : '') : '';
+
+          html += `
+            <div class="film" style="animation-delay: ${i * 50}ms">
+              <a href="${link}" target="_blank" rel="noopener">
+                <img class="film-poster" src="${poster}" alt="${title}"
+                  onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 2 3%22><rect fill=%22%231a1a1a%22 width=%222%22 height=%223%22/><text x=%221%22 y=%221.8%22 font-size=%22.25%22 text-anchor=%22middle%22 fill=%22%23666%22>No Poster</text></svg>'">
+              </a>
+              <div class="film-info">
+                <div class="film-title">${title}</div>
+                <div class="film-year">${year}</div>
+                ${stars ? `<div class="film-rating">${stars}</div>` : ''}
+                ${review ? `<div class="film-review">${review}</div>` : ''}
+                ${watchedDate ? `<div class="film-date">${watchedDate}</div>` : ''}
+              </div>
+            </div>
+          `;
+        });
+
+        container.innerHTML = html;
+      } catch (e) {
+        console.error('Failed to load RSS:', e);
+        container.innerHTML = '<div class="error">Failed to load films</div>';
+      }
+    }
+
+    loadFilms();
+  </script>
+</body>
+</html>
