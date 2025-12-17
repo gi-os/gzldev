@@ -59,20 +59,17 @@
 			flex-wrap: wrap;
 		}
 		.ascii {
-			width: 100%;
-		height: 100%;
-		font-family: "GioCustom", monospace;
-			display: grid;
-			grid-template-columns: 	repeat(112, 6px);
-			line-height: .5;
-			color: #888;
-			overflow: hidden;       /* hard clip */
-		color: #000;
-		}
-		.ascii span {
-			text-align: center;
-			font-size: 20px;
-		}
+  width: 100%;
+  height: 100%;
+  font-family: "GioCustom", monospace;
+  display: grid;
+  line-height: 0.5;
+  color: #000;
+  overflow: hidden;
+}
+.ascii span {
+  text-align: center;
+}
 	.ascii-art {
 		width: 100%;
 		height: 100%;
@@ -384,8 +381,29 @@ $$$$$$$$$$$$$$$$$$X+$$$$$$$$$$$$$$$$$$$$$$$$$X$$$$$$$$$$$$$$$$$$$$$$$$$XXX$$$$$$
 $$$$$$$$$$$$$$$$$$$x;$$$$$$$$$$$$$$$$$$$$X$$$$$$$$$$$$$$$$$$$$$$$$$$$X$$$$$$$$$$$$$$$$$$$$$$$$XxXxxxx+++++x+xXXXXXXXXXXX
 $$$$$$$$$$$$$$$$$$$$+;+$$$$$$$$$$$$$$$$X$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$xXxxxxx++x+xxxXXXxxxx$$XX`;
 		
-    const el=document.getElementById('art');
-    a.split('\n').forEach(r=>{r.slice(0,112).split('').forEach(c=>{const s=document.createElement('span');s.textContent=c===' '?'\u00A0':c;el.appendChild(s);});});
+    const el = document.getElementById('art');
+const COLS = 112;
+
+function renderAscii() {
+  el.innerHTML = '';
+  const W = el.clientWidth;
+  const cell = W / COLS;
+  const fontSize = cell * 2.8; // tweak multiplier as needed
+  
+  el.style.gridTemplateColumns = `repeat(${COLS}, ${cell}px)`;
+  
+  a.split('\n').forEach(r => {
+    r.slice(0, COLS).split('').forEach(c => {
+      const s = document.createElement('span');
+      s.style.fontSize = fontSize + 'px';
+      s.textContent = c === ' ' ? '\u00A0' : c;
+      el.appendChild(s);
+    });
+  });
+}
+
+window.addEventListener('DOMContentLoaded', renderAscii);
+window.addEventListener('resize', renderAscii);
   
   </script>
   <script>
