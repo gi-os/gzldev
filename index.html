@@ -58,7 +58,7 @@
 			gap: 20px;
 			flex-wrap: wrap;
 		}
-		.ascii {
+.ascii {
   width: 100%;
   height: 100%;
   font-family: "GioCustom", monospace;
@@ -69,8 +69,11 @@
 }
 .ascii span {
   text-align: center;
+  font-size: var(--cell-font, 10px);
+  opacity: 0;
+  animation: fadeIn 2600ms cubic-bezier(.2,.8,.2,1) forwards;
 }
-	.ascii-art {
+/*	.ascii-art {
 		width: 100%;
 		height: 100%;
 		font-family: "GioCustom", monospace;
@@ -81,13 +84,13 @@
 		padding: 0;
 		
 		/*font-family: "GioCustom", "New Century Schoolbook", serif;*/
-		font-size: 20px;         /* starting point */
+		/*font-size: 20px; 
 		line-height: 0.7;
 		
 		/*white-space: pre;*/
-		overflow: hidden;       /* hard clip */
+		/*overflow: hidden;  
 		color: #000;
-	}
+	}*/
 
     h1 {
       margin: 0;
@@ -377,38 +380,43 @@ XXXXXXXXXXXX+X&X&&&&&&&+X&X:+:+:::: :  :       :  : : :  :+:::: :::   ++ ++X&X+&
 &&&&&&&&&&&&&&&&&&&X &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&X+XXX+++:++++++X&&&&&&&&&&
 &&&&&&&&&&&&&&&&&&&&  +&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&+&++++++++++++&&&X+XX&&&&`;
 		
-    const el = document.getElementById('art');
+const el = document.getElementById('art');
 const COLS = 112;
-const STAGGER = 45;  // ms between cells
+const STAGGER = 45;
 const FADE_MS = 2600;
 
+// Debounce resize
+let resizeTimer;
+function debouncedRender() {
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(renderAscii, 150);
+}
+
 function renderAscii() {
-  el.innerHTML = '';
   const W = el.clientWidth;
   const cell = W / COLS;
   const fontSize = cell * 3.2;
   
   el.style.gridTemplateColumns = `repeat(${COLS}, ${cell}px)`;
+  el.style.setProperty('--cell-font', fontSize + 'px');
   
-  let row = 0;
-  a.split('\n').forEach(r => {
-    const line = r.slice(0, COLS);
+  // Build HTML string instead of creating elements individually
+  const rows = a.split('\n');
+  let html = '';
+  
+  rows.forEach((r, row) => {
     for (let col = 0; col < COLS; col++) {
-      const s = document.createElement('span');
-      s.style.fontSize = fontSize + 'px';
-      s.style.opacity = '0';
-      s.style.animation = `fadeIn ${FADE_MS}ms cubic-bezier(.2,.8,.2,1) forwards`;
-      // Top-right start: lower col index = higher delay
-      s.style.animationDelay = `${(row + (COLS - col)) * STAGGER}ms`;
-      s.textContent = line[col] === ' ' || !line[col] ? '\u00A0' : line[col];
-      el.appendChild(s);
+      const char = r[col] === ' ' || !r[col] ? '&nbsp;' : r[col];
+      const delay = (row + (COLS - col)) * STAGGER;
+      html += `<span style="animation-delay:${delay}ms">${char}</span>`;
     }
-    row++;
   });
+  
+  el.innerHTML = html;
 }
 
 window.addEventListener('DOMContentLoaded', renderAscii);
-window.addEventListener('resize', renderAscii);
+window.addEventListener('resize', debouncedRender);
   </script>
   <script>
     (function () {
