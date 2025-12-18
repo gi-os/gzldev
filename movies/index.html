@@ -103,7 +103,7 @@
     .film-info { 
       margin-top: 12px;
       display: grid;
-      grid-template-rows: auto auto auto auto auto;
+      grid-template-rows: auto auto auto auto;
       gap: 0;
     }
 
@@ -123,18 +123,32 @@
     }
 
     .film-title-inner.scrolling {
-      animation: scroll-title 10s linear infinite;
+      animation: scroll-title 6s linear infinite;
     }
 
-    @keyframes scroll-title {
+ 
+@keyframes scroll-title {
   0%, 10% { transform: translateX(0); }
-  45% { transform: translateX(calc(-100% + 160px)); }
-  55%, 65% { transform: translateX(calc(-100% + 160px)); }
+  45% { transform: translateX(var(--scroll-distance)); }
+  55%, 65% { transform: translateX(var(--scroll-distance)); }
   100% { transform: translateX(0); }
 }
+		
+    .film-year { 
+      font-size: 0.85em; 
+      opacity: 0.6;
+    }
 
-    .film-year { font-size: 0.85em; opacity: 0.6; }
-    .film-rating { margin-top: 6px; font-size: 1.2em; color: var(--hover-color); }
+    
+.film-rating { 
+  margin-top: 6px; 
+  font-size: 1.1em;
+  color: var(--hover-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: "GioCustom", "New Century Schoolbook", serif;
+}
     .film-review { margin-top: 8px; font-size: 0.8em; line-height: 1.4; opacity: 0.8; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     .film-date { font-size: 0.75em; opacity: 0.5; margin-top: 4px; }
 
@@ -157,7 +171,7 @@
       <a href="../">Home</a>
       <a href="../books/">Bookshelf</a>
       <a href="../blog/">Project Blog</a>
-			<a href="../about/">About Me</a>
+      <a href="../about/">About Me</a>
     </nav>
   </header>
 
@@ -199,7 +213,8 @@
           const posterMatch = desc.match(/src="([^"]+)"/);
           const poster = posterMatch ? posterMatch[1].replace('0-150-0-225', '0-500-0-750') : '';
 
-          const stars = rating ? '★'.repeat(Math.floor(rating)) + (rating % 1 ? '½' : '') : '';
+          // Lines 218-219, replace the stars line with:
+const stars = rating ? '×'.repeat(Math.floor(rating)) + (rating % 1 ? '-' : '') : '';
 
           html += `
             <div class="film" style="animation-delay: ${i * 50}ms">
@@ -211,8 +226,7 @@
                 <div class="film-title">
                   <span class="film-title-inner">${title}</span>
                 </div>
-                <div class="film-year">${year}</div>
-                ${stars ? `<div class="film-rating">${stars}</div>` : ''}
+                ${stars || year ? `<div class="film-rating"><span>${stars}</span><span class="film-year">${year}</span></div>` : ''}
                 ${review ? `<div class="film-review">${review}</div>` : ''}
                 ${watchedDate ? `<div class="film-date">${watchedDate}</div>` : ''}
               </div>
@@ -222,13 +236,17 @@
 
         container.innerHTML = html;
         
-        // Detect which titles need scrolling
-        document.querySelectorAll('.film-title').forEach(titleEl => {
-          const inner = titleEl.querySelector('.film-title-inner');
-          if (inner.scrollWidth > titleEl.clientWidth) {
-            inner.classList.add('scrolling');
-          }
-        });
+
+
+// Detect which titles need scrolling
+document.querySelectorAll('.film-title').forEach(titleEl => {
+  const inner = titleEl.querySelector('.film-title-inner');
+  if (inner.scrollWidth > titleEl.clientWidth) {
+    const overflow = inner.scrollWidth - titleEl.clientWidth;
+    inner.style.setProperty('--scroll-distance', `-${overflow}px`);
+    inner.classList.add('scrolling');
+  }
+});
         
       } catch (e) {
         console.error('Failed to load RSS:', e);
