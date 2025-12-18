@@ -1,6 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<!-- Add this right after opening <head> tag -->
+<script>
+  // Force font preload and pause animations until ready
+  document.documentElement.classList.add('fonts-loading');
+  
+  document.fonts.ready.then(() => {
+    document.documentElement.classList.remove('fonts-loading');
+    document.documentElement.classList.add('fonts-loaded');
+  });
+</script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Giovanni Lupo</title>
@@ -11,14 +21,33 @@
   justify-content: space-between;
   align-items: center;
 }
-    :root {
-      --pad: 20px;
-      --stagger-ms: 45;
-      --fade-ms: 2600;
-      --hover-color: #6a2548;
-      --base-color: #000;
-    }
+    
+		:root {
+			--pad: 20px;
+			--stagger-ms: 45;
+			--fade-ms: 2600;
+			--hover-color: #6a2548;
+			--base-color: #000;
+		}
 
+		/* Add these new rules after :root */
+		html.fonts-loading body {
+			opacity: 0;
+		}
+
+		html.fonts-loaded body {
+			animation: pageReveal 600ms cubic-bezier(.2,.8,.2,1) forwards;
+		}
+
+		@keyframes pageReveal {
+			from { opacity: 0; }
+			to { opacity: 1; }
+		}
+
+		/* Pause token animations until fonts load */
+		html.fonts-loading .token {
+			animation-play-state: paused !important;
+		}
     @font-face {
       font-family: "GioCustom";
       src: url("../acidic.woff2") format("woff2"),
@@ -31,6 +60,7 @@
     * {
       box-sizing: border-box;
     }
+		
 
     html, body {
       margin: 0;
