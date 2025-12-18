@@ -305,21 +305,31 @@
       const statusLabel = book.status?.replace(/-/g, ' ') || '';
       
       return `
-        <div class="book" style="animation-delay: ${delay}ms">
-          <img 
-            class="book-cover" 
-            src="${cover}" 
-            alt="${book.title}"
-            onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 2 3%22><rect fill=%22%23f0f0f0%22 width=%222%22 height=%223%22/><text x=%221%22 y=%221.8%22 font-size=%22.3%22 text-anchor=%22middle%22 fill=%22%23999%22>No Cover</text></svg>'"
-          >
-          <div class="book-info">
-            <div class="book-title">${book.title}</div>
-            <div class="book-author">${book.author}</div>
-            ${stars ? `<div class="book-rating">${stars}</div>` : ''}
-          </div>
-        </div>
-      `;
-    }
+        // Lines 308-318, replace the renderBook function with:
+
+function renderBook(book, delay) {
+  const primaryCover = book.cover || (book.isbn ? OPEN_LIBRARY_COVER(book.isbn) : '');
+  const fallbackCover = book.isbn ? `https://covers.openlibrary.org/b/isbn/${book.isbn}-M.jpg` : '';
+  const stars = book.rating ? '★'.repeat(book.rating) + '☆'.repeat(5 - book.rating) : '';
+  const statusLabel = book.status?.replace(/-/g, ' ') || '';
+  
+  return `
+    <div class="book" style="animation-delay: ${delay}ms">
+      <img 
+        class="book-cover" 
+        src="${primaryCover}" 
+        alt="${book.title}"
+        data-fallback="${fallbackCover}"
+        onerror="if(this.dataset.fallback && this.src !== this.dataset.fallback) { this.src = this.dataset.fallback; } else { this.src='data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 2 3%22><rect fill=%22%23f0f0f0%22 width=%222%22 height=%223%22/><text x=%221%22 y=%221.8%22 font-size=%22.3%22 text-anchor=%22middle%22 fill=%22%23999%22>No Cover</text></svg>'; }"
+      >
+      <div class="book-info">
+        <div class="book-title">${book.title}</div>
+        <div class="book-author">${book.author}</div>
+        ${stars ? `<div class="book-rating">${stars}</div>` : ''}
+      </div>
+    </div>
+  `;
+}
 
     // Filter buttons
     document.querySelectorAll('.filter-btn').forEach(btn => {
