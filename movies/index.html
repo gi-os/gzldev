@@ -173,22 +173,31 @@
       .film-poster { transition: none; }
       .film-title-inner { animation: none !important; }
 	}
-	::-webkit-scrollbar {
-	  width: 8px;
-	}
-	
-	::-webkit-scrollbar-track {
-	  background: #f0f0f0;
-	}
-	
-	::-webkit-scrollbar-thumb {
-	  background: var(--hover-color);
-	  border-radius: 4px;
-	}
-	
-	::-webkit-scrollbar-thumb:hover {
-	  background: #5a1d38;
-	}
+	/* Add this after line 147 (after the @media query) */
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f0f0f0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--hover-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #5a1d38;
+}
+
+/* Firefox scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--hover-color) #f0f0f0;
+}
   </style>
 </head>
 <body>
