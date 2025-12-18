@@ -151,10 +151,11 @@
     .film-rating .stars {
       font-size: 1.3em;
       letter-spacing: 0.05em;
+	vertical-align: 0.15em;
     }
 
     .film-rating .half-star {
-      font-size: 0.6em;
+      font-size: 0.7em;
     }
 
     .film-review { margin-top: 8px; font-size: 0.8em; line-height: 1.4; opacity: 0.8; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
@@ -223,7 +224,7 @@
           const poster = posterMatch ? posterMatch[1].replace('0-150-0-225', '0-500-0-750') : '';
 
           const stars = rating 
-            ? '+'.repeat(Math.floor(rating)) + (rating % 1 ? '<span class="half-star">.5</span>' : '') 
+            ? 'x'.repeat(Math.floor(rating)) + (rating % 1 ? '<span class="half-star">.5</span>' : '') 
             : '';
 
           html += `
