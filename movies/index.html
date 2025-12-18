@@ -149,6 +149,15 @@
   align-items: center;
   font-family: "GioCustom", "New Century Schoolbook", serif;
 }
+	  /* Lines 145-153, replace the stars styling with: */
+.film-rating span:first-child {
+  font-size: 1.3em;
+  letter-spacing: 0.05em;
+}
+
+.half-star {
+  font-size: 0.77em;
+}
     .film-review { margin-top: 8px; font-size: 0.8em; line-height: 1.4; opacity: 0.8; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     .film-date { font-size: 0.75em; opacity: 0.5; margin-top: 4px; }
 
@@ -213,7 +222,9 @@
           const posterMatch = desc.match(/src="([^"]+)"/);
           const poster = posterMatch ? posterMatch[1].replace('0-150-0-225', '0-500-0-750') : '';
 
-			const stars = rating ? '+'.repeat(Math.floor(rating)) + (rating % 1 ? '.5' : '') : '';
+const stars = rating 
+  ? '+'.repeat(Math.floor(rating)) + (rating % 1 ? '<span class="half-star">.5</span>' : '') 
+  : '';
 
           html += `
             <div class="film" style="animation-delay: ${i * 50}ms">
