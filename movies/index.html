@@ -213,8 +213,7 @@
           const posterMatch = desc.match(/src="([^"]+)"/);
           const poster = posterMatch ? posterMatch[1].replace('0-150-0-225', '0-500-0-750') : '';
 
-          // Lines 218-219, replace the stars line with:
-const stars = rating ? 'X'.repeat(Math.floor(rating)) + (rating % 1 ? '×' : '') : '';
+			const stars = rating ? '+'.repeat(Math.floor(rating)) + (rating % 1 ? '.5' : '') : '';
 
           html += `
             <div class="film" style="animation-delay: ${i * 50}ms">
