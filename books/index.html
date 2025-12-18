@@ -14,7 +14,7 @@
       --hover-color: #6a2548;
       --base-color: #000;
     }
-
+    
     @font-face {
       font-family: "GioCustom";
       src: url("../acidic.woff2") format("woff2"),
@@ -174,6 +174,23 @@
     @media (prefers-reduced-motion: reduce) {
       .book { animation: none; opacity: 1; }
       .book-cover { transition: none; }
+    }
+    
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: #f0f0f0;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: var(--hover-color);
+      border-radius: 4px;
+    }
+    
+    ::-webkit-scrollbar-thumb:hover {
+      background: #5a1d38;
     }
   </style>
 </head>
