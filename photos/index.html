@@ -279,6 +279,49 @@
       display: none;
     }
 
+    /* Lightbox metadata panel */
+    .lightbox-metadata {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      background: rgba(0, 0, 0, 0.85);
+      color: white;
+      padding: 16px 20px;
+      border-radius: 6px;
+      font-size: 0.85em;
+      line-height: 1.6;
+      max-width: 350px;
+      backdrop-filter: blur(10px);
+    }
+
+    .lightbox-metadata-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 6px;
+    }
+
+    .lightbox-metadata-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .lightbox-metadata-label {
+      opacity: 0.7;
+      min-width: 80px;
+    }
+
+    .lightbox-metadata-value {
+      text-align: right;
+      font-weight: 500;
+    }
+
+    .lightbox-location {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 0.95em;
+    }
+
     /* Responsive design */
     @media (max-width: 768px) {
       .photo-gallery {
@@ -299,6 +342,15 @@
 
       .lightbox .next {
         right: 10px;
+      }
+
+      .lightbox-metadata {
+        bottom: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+        font-size: 0.75em;
+        padding: 12px 14px;
       }
 
       nav {
@@ -352,6 +404,7 @@
     <span class="close">&times;</span>
     <img class="lightbox-content" id="lightbox-img" alt="Photo">
     <div class="lightbox-caption" id="caption"></div>
+    <div class="lightbox-metadata" id="lightbox-metadata"></div>
     <button class="prev">‹</button>
     <button class="next">›</button>
   </div>
@@ -466,32 +519,53 @@
     }
 
     /**
-     * Build EXIF metadata HTML overlay
+     * Build EXIF metadata HTML overlay for grid (camera model only)
      */
     function buildMetadataHTML(meta) {
       if (!meta || Object.keys(meta).length === 0) return '';
 
-      const parts = [];
-
-      // Camera model
+      // Only show camera model on grid hover
       if (meta.cameraMake || meta.cameraModel) {
         const camera = meta.cameraModel || meta.cameraMake;
-        parts.push(`📷 ${camera}`);
+        return `
+          <div class="photo-metadata">
+            <div class="metadata-row">
+              <span class="metadata-item">📷 ${camera}</span>
+            </div>
+          </div>
+        `;
+      }
+
+      return '';
+    }
+
+    /**
+     * Build full EXIF metadata panel for lightbox
+     */
+    async function buildLightboxMetadataHTML(meta) {
+      if (!meta || Object.keys(meta).length === 0) return '';
+
+      const rows = [];
+
+      // Camera
+      if (meta.cameraMake || meta.cameraModel) {
+        const camera = meta.cameraModel || meta.cameraMake;
+        rows.push({ label: 'Camera', value: camera });
       }
 
       // Resolution
       if (meta.width && meta.height) {
-        parts.push(`${meta.width} × ${meta.height}`);
+        rows.push({ label: 'Resolution', value: `${meta.width} × ${meta.height}` });
       }
 
       // ISO
       if (meta.isoSpeed) {
-        parts.push(`ISO ${meta.isoSpeed}`);
+        rows.push({ label: 'ISO', value: meta.isoSpeed });
       }
 
       // Aperture
       if (meta.aperture) {
-        parts.push(`f/${meta.aperture}`);
+        rows.push({ label: 'Aperture', value: `f/${meta.aperture}` });
       }
 
       // Shutter speed
@@ -499,33 +573,68 @@
         const shutter = meta.exposureTime < 1
           ? `1/${Math.round(1/meta.exposureTime)}`
           : `${meta.exposureTime}s`;
-        parts.push(shutter);
+        rows.push({ label: 'Shutter', value: shutter });
       }
 
       // Focal length
       if (meta.focalLength) {
-        parts.push(`${meta.focalLength}mm`);
+        rows.push({ label: 'Focal Length', value: `${meta.focalLength}mm` });
       }
 
-      // GPS location
-      if (meta.location?.latitude && meta.location?.longitude) {
-        parts.push(`📍 ${meta.location.latitude.toFixed(4)}, ${meta.location.longitude.toFixed(4)}`);
-      }
+      if (rows.length === 0) return '';
 
-      if (parts.length === 0) return '';
-
-      return `
-        <div class="photo-metadata">
-          <div class="metadata-row">
-            ${parts.slice(0, 3).map(p => `<span class="metadata-item">${p}</span>`).join('')}
+      let html = '<div>';
+      rows.forEach(row => {
+        html += `
+          <div class="lightbox-metadata-row">
+            <span class="lightbox-metadata-label">${row.label}</span>
+            <span class="lightbox-metadata-value">${row.value}</span>
           </div>
-          ${parts.length > 3 ? `
-            <div class="metadata-row">
-              ${parts.slice(3).map(p => `<span class="metadata-item">${p}</span>`).join('')}
+        `;
+      });
+
+      // Add location if GPS data exists
+      if (meta.location?.latitude && meta.location?.longitude) {
+        const location = await reverseGeocode(meta.location.latitude, meta.location.longitude);
+        if (location) {
+          html += `
+            <div class="lightbox-location">
+              📍 ${location}
             </div>
-          ` : ''}
-        </div>
-      `;
+          `;
+        }
+      }
+
+      html += '</div>';
+      return html;
+    }
+
+    /**
+     * Reverse geocode GPS coordinates to city, country
+     */
+    async function reverseGeocode(lat, lon) {
+      try {
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10`
+        );
+        const data = await response.json();
+
+        if (data && data.address) {
+          const city = data.address.city || data.address.town || data.address.village || data.address.county;
+          const country = data.address.country;
+
+          if (city && country) {
+            return `${city}, ${country}`;
+          } else if (country) {
+            return country;
+          }
+        }
+
+        return `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+      } catch (error) {
+        console.error('Geocoding error:', error);
+        return `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+      }
     }
 
     /**
@@ -568,18 +677,21 @@
     /**
      * Open lightbox with specific photo
      */
-    function openLightbox(index) {
+    async function openLightbox(index) {
       currentPhotoIndex = index;
       const photo = photos[index];
 
       const lightbox = document.getElementById('lightbox');
       const img = document.getElementById('lightbox-img');
-      const caption = document.getElementById('caption');
+      const metadataPanel = document.getElementById('lightbox-metadata');
 
       // Use high-res thumbnail (s1600 for large display)
       const imageUrl = photo.thumbnailLink?.replace('s220', 's1600') || getImageUrl(photo.id);
       img.src = imageUrl;
-      caption.textContent = photo.description || photo.name;
+
+      // Build and display metadata panel
+      const metadataHTML = await buildLightboxMetadataHTML(photo.imageMediaMetadata);
+      metadataPanel.innerHTML = metadataHTML;
 
       lightbox.classList.add('active');
       document.body.style.overflow = 'hidden';
