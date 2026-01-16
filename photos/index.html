@@ -446,6 +446,13 @@
         const data = await response.json();
         photos = data.files || [];
 
+        // Debug: log the full API response
+        console.log('Google Drive API response:', data);
+        console.log('Photos loaded:', photos);
+        if (photos.length > 0) {
+          console.log('First photo metadata sample:', photos[0]);
+        }
+
         loading.style.display = 'none';
 
         if (photos.length === 0) {
@@ -576,6 +583,8 @@
         items.push(`<div class="lightbox-metadata-row lightbox-location">📍 ${location}</div>`);
       } else {
         console.log('No location data in metadata');
+        // Show that GPS data is not available
+        items.push(`<div class="lightbox-metadata-row lightbox-location" style="opacity: 0.5;">📍 No GPS data</div>`);
       }
 
       if (items.length === 0) return '';
