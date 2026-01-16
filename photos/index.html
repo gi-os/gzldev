@@ -535,6 +535,8 @@
     async function buildLightboxMetadataHTML(meta) {
       if (!meta || Object.keys(meta).length === 0) return '';
 
+      console.log('Building metadata, full meta:', meta);
+
       const items = [];
 
       // Camera
@@ -567,9 +569,13 @@
       }
 
       // Add location if GPS data exists
+      console.log('Checking location:', meta.location);
       if (meta.location?.latitude && meta.location?.longitude) {
+        console.log('Location found, geocoding...');
         const location = await reverseGeocode(meta.location.latitude, meta.location.longitude);
         items.push(`<div class="lightbox-metadata-row lightbox-location">📍 ${location}</div>`);
+      } else {
+        console.log('No location data in metadata');
       }
 
       if (items.length === 0) return '';
@@ -582,13 +588,27 @@
      */
     async function reverseGeocode(lat, lon) {
       try {
+        console.log('Geocoding:', lat, lon);
+
         const response = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10`
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lon}&zoom=10`,
+          {
+            headers: {
+              'User-Agent': 'PhotoPortfolio/1.0'
+            }
+          }
         );
+
+        if (!response.ok) {
+          console.error('Geocoding HTTP error:', response.status);
+          return `${lat.toFixed(4)}, ${lon.toFixed(4)}`;
+        }
+
         const data = await response.json();
+        console.log('Geocoding response:', data);
 
         if (data && data.address) {
-          const city = data.address.city || data.address.town || data.address.village || data.address.county;
+          const city = data.address.city || data.address.town || data.address.village || data.address.county || data.address.state;
           const country = data.address.country;
 
           if (city && country) {
