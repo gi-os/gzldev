@@ -133,7 +133,9 @@
       background: #f9f9f9;
       cursor: pointer;
       transition: transform 0.2s ease, box-shadow 0.2s ease;
-      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .photo-card:hover {
@@ -143,8 +145,8 @@
 
     .photo-card img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
+      object-fit: contain;
       display: block;
       transition: transform 0.3s ease;
     }
@@ -469,7 +471,9 @@
       const img = document.getElementById('lightbox-img');
       const caption = document.getElementById('caption');
 
-      img.src = getImageUrl(photo.id);
+      // Use high-res thumbnail (s1600 for large display)
+      const imageUrl = photo.thumbnailLink?.replace('s220', 's1600') || getImageUrl(photo.id);
+      img.src = imageUrl;
       caption.textContent = photo.description || photo.name;
 
       lightbox.classList.add('active');
