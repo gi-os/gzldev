@@ -434,7 +434,7 @@
       try {
         // Build the API URL to list files in the folder
         const query = `'${CONFIG.FOLDER_ID}' in parents and mimeType contains 'image/'`;
-        const fields = 'files(id,name,thumbnailLink,webContentLink,imageMediaMetadata,createdTime,description)';
+        const fields = 'files(id,name,thumbnailLink,webContentLink,imageMediaMetadata(width,height,location,cameraMake,cameraModel,exposureTime,aperture,focalLength,isoSpeed),createdTime,description)';
         const url = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(query)}&key=${CONFIG.API_KEY}&fields=${fields}&orderBy=createdTime desc`;
 
         const response = await fetch(url);
