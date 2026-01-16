@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Photos | Giovanni Lupo</title>
+  <style>
+    :root {
+      --pad: 20px;
+      --hover-color: #6a2548;
+      --base-color: #000;
+    }
+
+    @font-face {
+      font-family: "GioCustom";
+      src: url("../acidic.woff2") format("woff2"),
+           url("../acidic.ttf")   format("truetype");
+      font-weight: 400 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    html, body { margin: 0; min-height: 100%; }
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: "GioCustom", "New Century Schoolbook", "TeX Gyre Schola", serif;
+      background: #fff;
+      color: #000;
+      padding: var(--pad);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    h1 {
+      font-size: clamp(24px, 4vw, 42px);
+      font-weight: 800;
+      margin: 0;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+      font-size: 1em;
+    }
+
+    nav a {
+      color: var(--base-color);
+      text-decoration: none;
+      transition: color 200ms ease;
+    }
+    nav a:hover { color: var(--hover-color); }
+
+    /* Loading spinner */
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 400px;
+      gap: 16px;
+    }
+
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid var(--base-color);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .loading-text {
+      font-size: 0.9em;
+      color: #666;
+    }
+
+    /* Error message */
+    .error-message {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: #d32f2f;
+      opacity: 0;
+      animation: fadeIn 600ms ease forwards;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 2rem;
+      color: #666;
+      font-size: 1.1rem;
+      opacity: 0;
+      animation: fadeIn 600ms ease forwards;
+    }
+
+    /* Photo gallery grid */
+    .photo-gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+      max-width: 1400px;
+      opacity: 0;
+      animation: fadeIn 800ms ease forwards;
+      animation-delay: 200ms;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Photo card */
+    .photo-card {
+      position: relative;
+      border-radius: 4px;
+      overflow: hidden;
+      background: #f9f9f9;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      aspect-ratio: 4/3;
+    }
+
+    .photo-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .photo-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.3s ease;
+    }
+
+    .photo-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .photo-caption {
+      padding: 12px;
+      background: white;
+      font-size: 0.85em;
+      color: #333;
+      text-align: center;
+      border-top: 1px solid #eee;
+    }
+
+    /* Lightbox */
+    .lightbox {
+      display: none;
+      position: fixed;
+      z-index: 9999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.95);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox.active {
+      display: flex;
+    }
+
+    .lightbox-content {
+      max-width: 90%;
+      max-height: 85vh;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+
+    /* Lightbox controls */
+    .lightbox .close {
+      position: absolute;
+      top: 20px;
+      right: 40px;
+      color: white;
+      font-size: 40px;
+      font-weight: 300;
+      cursor: pointer;
+      transition: opacity 0.2s;
+      z-index: 10000;
+      line-height: 1;
+    }
+
+    .lightbox .close:hover {
+      opacity: 0.7;
+    }
+
+    .lightbox .prev,
+    .lightbox .next {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: none;
+      font-size: 2rem;
+      padding: 16px 24px;
+      cursor: pointer;
+      border-radius: 4px;
+      transition: background 0.2s;
+      font-family: "GioCustom", monospace;
+    }
+
+    .lightbox .prev:hover,
+    .lightbox .next:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .lightbox .prev {
+      left: 20px;
+    }
+
+    .lightbox .next {
+      right: 20px;
+    }
+
+    .lightbox-caption {
+      position: absolute;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: white;
+      background: rgba(0, 0, 0, 0.7);
+      padding: 12px 24px;
+      border-radius: 4px;
+      max-width: 80%;
+      text-align: center;
+    }
+
+    /* Responsive design */
+    @media (max-width: 768px) {
+      .photo-gallery {
+        grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+        gap: 16px;
+      }
+
+      .lightbox .prev,
+      .lightbox .next {
+        padding: 12px 16px;
+        font-size: 1.5rem;
+      }
+
+      .lightbox .prev {
+        left: 10px;
+      }
+
+      .lightbox .next {
+        right: 10px;
+      }
+
+      nav {
+        gap: 16px;
+        font-size: 0.9em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .photo-gallery {
+        grid-template-columns: 1fr;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Photos</h1>
+    <nav>
+      <a href="../">Home</a>
+      <a href="../books/">Bookshelf</a>
+      <a href="../movies/">Letterboxd</a>
+      <a href="../blog/">Project Blog</a>
+      <a href="../about/">About Me</a>
+    </nav>
+  </header>
+
+  <div id="loading" class="loading">
+    <div class="spinner"></div>
+    <p class="loading-text">Loading photos...</p>
+  </div>
+
+  <div id="gallery" class="photo-gallery"></div>
+
+  <div id="error-message" class="error-message" style="display: none;">
+    <p>Unable to load photos. Please check your configuration.</p>
+  </div>
+
+  <div id="empty-state" class="empty-state" style="display: none;">
+    <p>No photos yet. Upload some to your Google Drive folder!</p>
+  </div>
+
+  <!-- Lightbox Modal -->
+  <div id="lightbox" class="lightbox">
+    <span class="close">&times;</span>
+    <img class="lightbox-content" id="lightbox-img" alt="Photo">
+    <div class="lightbox-caption" id="caption"></div>
+    <button class="prev">‹</button>
+    <button class="next">›</button>
+  </div>
+
+  <script>
+    // Configuration - Update these values
+    const CONFIG = {
+      // Get this from Google Cloud Console
+      API_KEY: 'YOUR_GOOGLE_API_KEY',
+
+      // Your Google Drive folder ID (from the folder's share link)
+      FOLDER_ID: 'YOUR_FOLDER_ID',
+
+      // Set to true to only show publicly shared images
+      PUBLIC_ONLY: true
+    };
+
+    // State management
+    let photos = [];
+    let currentPhotoIndex = 0;
+
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', async () => {
+      await loadPhotos();
+      setupLightbox();
+    });
+
+    /**
+     * Load photos from Google Drive folder
+     */
+    async function loadPhotos() {
+      const loading = document.getElementById('loading');
+      const gallery = document.getElementById('gallery');
+      const errorMessage = document.getElementById('error-message');
+      const emptyState = document.getElementById('empty-state');
+
+      try {
+        // Build the API URL to list files in the folder
+        const query = `'${CONFIG.FOLDER_ID}' in parents and mimeType contains 'image/'`;
+        const fields = 'files(id,name,thumbnailLink,webContentLink,imageMediaMetadata,createdTime,description)';
+        const url = `https://www.googleapis.com/drive/v3/files?q=${encodeURIComponent(query)}&key=${CONFIG.API_KEY}&fields=${fields}&orderBy=createdTime desc`;
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error(`API Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        photos = data.files || [];
+
+        loading.style.display = 'none';
+
+        if (photos.length === 0) {
+          emptyState.style.display = 'block';
+          return;
+        }
+
+        // Render the gallery
+        renderGallery();
+
+      } catch (error) {
+        console.error('Error loading photos:', error);
+        loading.style.display = 'none';
+        errorMessage.style.display = 'block';
+
+        // Show helpful error message
+        if (error.message.includes('403')) {
+          errorMessage.innerHTML = '<p>API key error. Please check your Google Drive API configuration.</p>';
+        } else if (error.message.includes('404')) {
+          errorMessage.innerHTML = '<p>Folder not found. Please check your FOLDER_ID.</p>';
+        }
+      }
+    }
+
+    /**
+     * Render photo gallery
+     */
+    function renderGallery() {
+      const gallery = document.getElementById('gallery');
+      gallery.innerHTML = '';
+
+      photos.forEach((photo, index) => {
+        const photoCard = document.createElement('div');
+        photoCard.className = 'photo-card';
+
+        // Use thumbnail for gallery, full image for lightbox
+        const thumbnailUrl = photo.thumbnailLink?.replace('s220', 's640') || getImageUrl(photo.id);
+
+        photoCard.innerHTML = `
+          <img src="${thumbnailUrl}"
+               alt="${photo.name}"
+               loading="lazy"
+               data-index="${index}">
+          ${photo.description ? `<div class="photo-caption">${photo.description}</div>` : ''}
+        `;
+
+        photoCard.querySelector('img').addEventListener('click', () => openLightbox(index));
+        gallery.appendChild(photoCard);
+      });
+    }
+
+    /**
+     * Get direct image URL from Google Drive
+     */
+    function getImageUrl(fileId) {
+      return `https://drive.google.com/uc?export=view&id=${fileId}`;
+    }
+
+    /**
+     * Setup lightbox functionality
+     */
+    function setupLightbox() {
+      const lightbox = document.getElementById('lightbox');
+      const closeBtn = document.querySelector('.lightbox .close');
+      const prevBtn = document.querySelector('.lightbox .prev');
+      const nextBtn = document.querySelector('.lightbox .next');
+
+      closeBtn.addEventListener('click', closeLightbox);
+      prevBtn.addEventListener('click', showPrevPhoto);
+      nextBtn.addEventListener('click', showNextPhoto);
+
+      // Close on background click
+      lightbox.addEventListener('click', (e) => {
+        if (e.target === lightbox) {
+          closeLightbox();
+        }
+      });
+
+      // Keyboard navigation
+      document.addEventListener('keydown', (e) => {
+        if (!lightbox.classList.contains('active')) return;
+
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') showPrevPhoto();
+        if (e.key === 'ArrowRight') showNextPhoto();
+      });
+    }
+
+    /**
+     * Open lightbox with specific photo
+     */
+    function openLightbox(index) {
+      currentPhotoIndex = index;
+      const photo = photos[index];
+
+      const lightbox = document.getElementById('lightbox');
+      const img = document.getElementById('lightbox-img');
+      const caption = document.getElementById('caption');
+
+      img.src = getImageUrl(photo.id);
+      caption.textContent = photo.description || photo.name;
+
+      lightbox.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    /**
+     * Close lightbox
+     */
+    function closeLightbox() {
+      const lightbox = document.getElementById('lightbox');
+      lightbox.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    /**
+     * Show previous photo in lightbox
+     */
+    function showPrevPhoto() {
+      currentPhotoIndex = (currentPhotoIndex - 1 + photos.length) % photos.length;
+      openLightbox(currentPhotoIndex);
+    }
+
+    /**
+     * Show next photo in lightbox
+     */
+    function showNextPhoto() {
+      currentPhotoIndex = (currentPhotoIndex + 1) % photos.length;
+      openLightbox(currentPhotoIndex);
+    }
+  </script>
+</body>
+</html>
