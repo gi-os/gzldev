@@ -163,6 +163,39 @@
       transform: scale(1.05);
     }
 
+    /* EXIF metadata overlay */
+    .photo-metadata {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+      color: white;
+      padding: 12px;
+      font-size: 0.7em;
+      line-height: 1.4;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+
+    .photo-card:hover .photo-metadata {
+      opacity: 1;
+    }
+
+    .metadata-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .metadata-item {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
     .photo-caption {
       display: none;
       color: #333;
@@ -405,8 +438,9 @@
         const photoCard = document.createElement('div');
 
         // Determine if photo is portrait or landscape from metadata
-        const width = photo.imageMediaMetadata?.width || 1;
-        const height = photo.imageMediaMetadata?.height || 1;
+        const meta = photo.imageMediaMetadata || {};
+        const width = meta.width || 1;
+        const height = meta.height || 1;
         const isPortrait = height > width;
 
         // Apply appropriate class for bento layout
@@ -415,16 +449,83 @@
         // Use thumbnail for gallery, full image for lightbox
         const thumbnailUrl = photo.thumbnailLink?.replace('s220', 's640') || getImageUrl(photo.id);
 
+        // Build metadata overlay
+        const metadataHTML = buildMetadataHTML(meta);
+
         photoCard.innerHTML = `
           <img src="${thumbnailUrl}"
                alt="${photo.name}"
                loading="lazy"
                data-index="${index}">
+          ${metadataHTML}
         `;
 
         photoCard.querySelector('img').addEventListener('click', () => openLightbox(index));
         gallery.appendChild(photoCard);
       });
+    }
+
+    /**
+     * Build EXIF metadata HTML overlay
+     */
+    function buildMetadataHTML(meta) {
+      if (!meta || Object.keys(meta).length === 0) return '';
+
+      const parts = [];
+
+      // Camera model
+      if (meta.cameraMake || meta.cameraModel) {
+        const camera = meta.cameraModel || meta.cameraMake;
+        parts.push(`📷 ${camera}`);
+      }
+
+      // Resolution
+      if (meta.width && meta.height) {
+        parts.push(`${meta.width} × ${meta.height}`);
+      }
+
+      // ISO
+      if (meta.isoSpeed) {
+        parts.push(`ISO ${meta.isoSpeed}`);
+      }
+
+      // Aperture
+      if (meta.aperture) {
+        parts.push(`f/${meta.aperture}`);
+      }
+
+      // Shutter speed
+      if (meta.exposureTime) {
+        const shutter = meta.exposureTime < 1
+          ? `1/${Math.round(1/meta.exposureTime)}`
+          : `${meta.exposureTime}s`;
+        parts.push(shutter);
+      }
+
+      // Focal length
+      if (meta.focalLength) {
+        parts.push(`${meta.focalLength}mm`);
+      }
+
+      // GPS location
+      if (meta.location?.latitude && meta.location?.longitude) {
+        parts.push(`📍 ${meta.location.latitude.toFixed(4)}, ${meta.location.longitude.toFixed(4)}`);
+      }
+
+      if (parts.length === 0) return '';
+
+      return `
+        <div class="photo-metadata">
+          <div class="metadata-row">
+            ${parts.slice(0, 3).map(p => `<span class="metadata-item">${p}</span>`).join('')}
+          </div>
+          ${parts.length > 3 ? `
+            <div class="metadata-row">
+              ${parts.slice(3).map(p => `<span class="metadata-item">${p}</span>`).join('')}
+            </div>
+          ` : ''}
+        </div>
+      `;
     }
 
     /**
