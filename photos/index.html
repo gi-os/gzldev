@@ -281,45 +281,38 @@
 
     /* Lightbox metadata panel */
     .lightbox-metadata {
-      position: absolute;
-      bottom: 20px;
-      right: 20px;
-      background: rgba(0, 0, 0, 0.85);
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.9);
       color: white;
-      padding: 16px 20px;
-      border-radius: 6px;
-      font-size: 0.85em;
+      padding: 20px;
+      font-size: 0.9em;
       line-height: 1.6;
-      max-width: 350px;
-      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
     }
 
     .lightbox-metadata-row {
       display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      margin-bottom: 6px;
-    }
-
-    .lightbox-metadata-row:last-child {
-      margin-bottom: 0;
+      gap: 8px;
+      align-items: center;
     }
 
     .lightbox-metadata-label {
       opacity: 0.7;
-      min-width: 80px;
     }
 
     .lightbox-metadata-value {
-      text-align: right;
       font-weight: 500;
     }
 
     .lightbox-location {
-      margin-top: 12px;
-      padding-top: 12px;
-      border-top: 1px solid rgba(255, 255, 255, 0.2);
-      font-size: 0.95em;
+      font-size: 1em;
     }
 
     /* Responsive design */
@@ -345,12 +338,9 @@
       }
 
       .lightbox-metadata {
-        bottom: 10px;
-        right: 10px;
-        left: 10px;
-        max-width: none;
         font-size: 0.75em;
-        padding: 12px 14px;
+        padding: 12px;
+        gap: 16px;
       }
 
       nav {
@@ -545,27 +535,22 @@
     async function buildLightboxMetadataHTML(meta) {
       if (!meta || Object.keys(meta).length === 0) return '';
 
-      const rows = [];
+      const items = [];
 
       // Camera
       if (meta.cameraMake || meta.cameraModel) {
         const camera = meta.cameraModel || meta.cameraMake;
-        rows.push({ label: 'Camera', value: camera });
-      }
-
-      // Resolution
-      if (meta.width && meta.height) {
-        rows.push({ label: 'Resolution', value: `${meta.width} × ${meta.height}` });
+        items.push(`<div class="lightbox-metadata-row"><span class="lightbox-metadata-label">Camera:</span> <span class="lightbox-metadata-value">${camera}</span></div>`);
       }
 
       // ISO
       if (meta.isoSpeed) {
-        rows.push({ label: 'ISO', value: meta.isoSpeed });
+        items.push(`<div class="lightbox-metadata-row"><span class="lightbox-metadata-label">ISO:</span> <span class="lightbox-metadata-value">${meta.isoSpeed}</span></div>`);
       }
 
       // Aperture
       if (meta.aperture) {
-        rows.push({ label: 'Aperture', value: `f/${meta.aperture}` });
+        items.push(`<div class="lightbox-metadata-row"><span class="lightbox-metadata-label">Aperture:</span> <span class="lightbox-metadata-value">f/${meta.aperture}</span></div>`);
       }
 
       // Shutter speed
@@ -573,40 +558,23 @@
         const shutter = meta.exposureTime < 1
           ? `1/${Math.round(1/meta.exposureTime)}`
           : `${meta.exposureTime}s`;
-        rows.push({ label: 'Shutter', value: shutter });
+        items.push(`<div class="lightbox-metadata-row"><span class="lightbox-metadata-label">Shutter:</span> <span class="lightbox-metadata-value">${shutter}</span></div>`);
       }
 
       // Focal length
       if (meta.focalLength) {
-        rows.push({ label: 'Focal Length', value: `${meta.focalLength}mm` });
+        items.push(`<div class="lightbox-metadata-row"><span class="lightbox-metadata-label">Focal Length:</span> <span class="lightbox-metadata-value">${meta.focalLength}mm</span></div>`);
       }
-
-      if (rows.length === 0) return '';
-
-      let html = '<div>';
-      rows.forEach(row => {
-        html += `
-          <div class="lightbox-metadata-row">
-            <span class="lightbox-metadata-label">${row.label}</span>
-            <span class="lightbox-metadata-value">${row.value}</span>
-          </div>
-        `;
-      });
 
       // Add location if GPS data exists
       if (meta.location?.latitude && meta.location?.longitude) {
         const location = await reverseGeocode(meta.location.latitude, meta.location.longitude);
-        if (location) {
-          html += `
-            <div class="lightbox-location">
-              📍 ${location}
-            </div>
-          `;
-        }
+        items.push(`<div class="lightbox-metadata-row lightbox-location">📍 ${location}</div>`);
       }
 
-      html += '</div>';
-      return html;
+      if (items.length === 0) return '';
+
+      return items.join('');
     }
 
     /**
