@@ -114,6 +114,7 @@
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       grid-auto-rows: 250px;
+      grid-auto-flow: dense;
       gap: 16px;
       max-width: 1400px;
       opacity: 0;
@@ -144,6 +145,11 @@
     /* Landscape photos span 1 row */
     .photo-card.landscape {
       grid-row: span 1;
+    }
+
+    /* XPAN (panoramic) photos span 2 columns */
+    .photo-card.xpan {
+      grid-column: span 2;
     }
 
     .photo-card:hover {
@@ -491,14 +497,22 @@ photo.description
       photos.forEach((photo, index) => {
         const photoCard = document.createElement('div');
 
-        // Determine if photo is portrait or landscape from metadata
+        // Determine if photo is portrait, landscape, or XPAN from metadata
         const meta = photo.imageMediaMetadata || {};
         const width = meta.width || 1;
         const height = meta.height || 1;
+        const aspectRatio = width / height;
         const isPortrait = height > width;
+        const isXPAN = aspectRatio > 2; // XPAN panoramic photos have aspect ratio > 2:1
 
         // Apply appropriate class for bento layout
-        photoCard.className = `photo-card ${isPortrait ? 'portrait' : 'landscape'}`;
+        let layoutClass = 'landscape';
+        if (isXPAN) {
+          layoutClass = 'xpan';
+        } else if (isPortrait) {
+          layoutClass = 'portrait';
+        }
+        photoCard.className = `photo-card ${layoutClass}`;
 
         // Use thumbnail for gallery, full image for lightbox
         const thumbnailUrl = photo.thumbnailLink?.replace('s220', 's640') || getImageUrl(photo.id);
