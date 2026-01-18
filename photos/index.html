@@ -462,17 +462,23 @@
         // Sort photos: digital photos (with metadata) first by date taken (newest first),
         // then film photos (no metadata) at the bottom
         photos.sort((a, b) => {
-          const hasMetadataA = !!a.imageMediaMetadata?.time;
-          const hasMetadataB = !!b.imageMediaMetadata?.time;
+          // Check if photo has imageMediaMetadata object and time field
+          const metaA = a.imageMediaMetadata;
+          const metaB = b.imageMediaMetadata;
+          const hasMetadataA = metaA && metaA.time;
+          const hasMetadataB = metaB && metaB.time;
 
           // Film photos (no metadata) go to the bottom
           if (hasMetadataA && !hasMetadataB) return -1;
           if (!hasMetadataA && hasMetadataB) return 1;
 
-          // Both have metadata or both don't - sort by date taken if available
-          const dateA = a.imageMediaMetadata?.time || '';
-          const dateB = b.imageMediaMetadata?.time || '';
-          return dateB.localeCompare(dateA); // Newest first
+          // Both have metadata - sort by date taken (newest first)
+          if (hasMetadataA && hasMetadataB) {
+            return metaB.time.localeCompare(metaA.time);
+          }
+
+          // Both are film photos - keep original order
+          return 0;
         });
 
         loading.style.display = 'none';
