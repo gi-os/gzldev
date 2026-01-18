@@ -366,11 +366,7 @@
       }
     }
   </style>
-photo.description
-<function renderGallery
-  Page_DownPage_DownPage_DownPdata-index="${index}">
-
-  head>
+</head>
 
 <body>
   <header>
@@ -463,11 +459,11 @@ photo.description
           console.log('First photo metadata sample:', photos[0]);
         }
 
-        // Sort photos by date taken (chronological order)
+        // Sort photos by date taken (newest first)
         photos.sort((a, b) => {
           const dateA = a.imageMediaMetadata?.time || a.createdTime || '';
           const dateB = b.imageMediaMetadata?.time || b.createdTime || '';
-          return dateA.localeCompare(dateB);
+          return dateB.localeCompare(dateA); // Reverse order for newest first
         });
 
         loading.style.display = 'none';
