@@ -459,6 +459,15 @@
           console.log('First photo metadata sample:', photos[0]);
         }
 
+        // Debug: Check metadata for first few photos
+        console.log('=== METADATA CHECK ===');
+        photos.slice(0, 10).forEach((photo, i) => {
+          console.log(`Photo ${i}: ${photo.name}`);
+          console.log('  imageMediaMetadata:', photo.imageMediaMetadata);
+          console.log('  time:', photo.imageMediaMetadata?.time);
+          console.log('  createdTime:', photo.createdTime);
+        });
+
         // Sort photos: digital photos (with metadata) first by date taken (newest first),
         // then film photos (no metadata) at the bottom
         photos.sort((a, b) => {
@@ -468,17 +477,34 @@
           const hasMetadataA = metaA && metaA.time;
           const hasMetadataB = metaB && metaB.time;
 
+          console.log(`Comparing: ${a.name} (meta: ${!!hasMetadataA}) vs ${b.name} (meta: ${!!hasMetadataB})`);
+
           // Film photos (no metadata) go to the bottom
-          if (hasMetadataA && !hasMetadataB) return -1;
-          if (!hasMetadataA && hasMetadataB) return 1;
+          if (hasMetadataA && !hasMetadataB) {
+            console.log('  -> A has metadata, B doesn\'t: A goes first');
+            return -1;
+          }
+          if (!hasMetadataA && hasMetadataB) {
+            console.log('  -> B has metadata, A doesn\'t: B goes first');
+            return 1;
+          }
 
           // Both have metadata - sort by date taken (newest first)
           if (hasMetadataA && hasMetadataB) {
-            return metaB.time.localeCompare(metaA.time);
+            const result = metaB.time.localeCompare(metaA.time);
+            console.log(`  -> Both have metadata: ${metaB.time} vs ${metaA.time} = ${result}`);
+            return result;
           }
 
           // Both are film photos - keep original order
+          console.log('  -> Both film photos: keeping order');
           return 0;
+        });
+
+        // Debug: Show order after sorting
+        console.log('=== AFTER SORTING ===');
+        photos.slice(0, 10).forEach((photo, i) => {
+          console.log(`Position ${i}: ${photo.name} - time: ${photo.imageMediaMetadata?.time || 'NO METADATA'}`);
         });
 
         loading.style.display = 'none';
