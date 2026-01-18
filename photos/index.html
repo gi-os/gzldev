@@ -463,6 +463,13 @@ photo.description
           console.log('First photo metadata sample:', photos[0]);
         }
 
+        // Sort photos by date taken (chronological order)
+        photos.sort((a, b) => {
+          const dateA = a.imageMediaMetadata?.time || a.createdTime || '';
+          const dateB = b.imageMediaMetadata?.time || b.createdTime || '';
+          return dateA.localeCompare(dateB);
+        });
+
         loading.style.display = 'none';
 
         if (photos.length === 0) {
