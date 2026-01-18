@@ -459,11 +459,20 @@
           console.log('First photo metadata sample:', photos[0]);
         }
 
-        // Sort photos by date taken (newest first)
+        // Sort photos: digital photos (with metadata) first by date taken (newest first),
+        // then film photos (no metadata) at the bottom
         photos.sort((a, b) => {
-          const dateA = a.imageMediaMetadata?.time || a.createdTime || '';
-          const dateB = b.imageMediaMetadata?.time || b.createdTime || '';
-          return dateB.localeCompare(dateA); // Reverse order for newest first
+          const hasMetadataA = !!a.imageMediaMetadata?.time;
+          const hasMetadataB = !!b.imageMediaMetadata?.time;
+
+          // Film photos (no metadata) go to the bottom
+          if (hasMetadataA && !hasMetadataB) return -1;
+          if (!hasMetadataA && hasMetadataB) return 1;
+
+          // Both have metadata or both don't - sort by date taken if available
+          const dateA = a.imageMediaMetadata?.time || '';
+          const dateB = b.imageMediaMetadata?.time || '';
+          return dateB.localeCompare(dateA); // Newest first
         });
 
         loading.style.display = 'none';
