@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About Me | Giovanni Lupo</title>
+  <style>
+    :root {
+      --pad: 20px;
+      --hover-color: #6a2548;
+      --base-color: #000;
+    }
+
+    @font-face {
+      font-family: "GioCustom";
+      src: url("../acidic.woff2") format("woff2"),
+           url("../acidic.ttf")   format("truetype");
+      font-weight: 400 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    html, body { margin: 0; min-height: 100%; }
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: "GioCustom", "New Century Schoolbook", "TeX Gyre Schola", serif;
+      background: #fff;
+      color: #000;
+      padding: var(--pad);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    h1 {
+      font-size: clamp(24px, 4vw, 42px);
+      font-weight: 800;
+      margin: 0;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+      font-size: 1em;
+    }
+
+    nav a {
+      color: var(--base-color);
+      text-decoration: none;
+      transition: color 200ms ease;
+    }
+    nav a:hover { color: var(--hover-color); }
+
+    .content {
+      max-width: 720px;
+      opacity: 0;
+      animation: fadeIn 600ms ease forwards;
+    }
+
+    .section {
+      margin-bottom: 48px;
+    }
+
+    .section h2 {
+      font-size: 1.6em;
+      font-weight: 800;
+      margin: 0 0 16px 0;
+      color: var(--base-color);
+    }
+
+    .section p {
+      font-size: 1.05em;
+      line-height: 1.7;
+      margin: 0 0 1em 0;
+      opacity: 0.9;
+    }
+
+    .section:last-child {
+      margin-bottom: 0;
+    }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 24px;
+      margin-top: 16px;
+    }
+
+    .skill-category h3 {
+      font-size: 1.1em;
+      font-weight: 700;
+      margin: 0 0 8px 0;
+      color: var(--hover-color);
+    }
+
+    .skill-category ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .skill-category li {
+      font-size: 0.95em;
+      line-height: 1.6;
+      opacity: 0.85;
+      padding: 4px 0;
+    }
+
+    .interests-list {
+      list-style: none;
+      padding: 0;
+      margin: 16px 0 0 0;
+    }
+
+    .interests-list li {
+      font-size: 1.05em;
+      line-height: 1.8;
+      opacity: 0.85;
+      padding: 6px 0;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .interests-list li:last-child {
+      border-bottom: none;
+    }
+
+    .contact-links {
+      display: flex;
+      gap: 24px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .contact-links a {
+      color: var(--hover-color);
+      text-decoration: none;
+      font-size: 1.05em;
+      transition: opacity 200ms ease;
+    }
+
+    .contact-links a:hover {
+      opacity: 0.7;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .content { animation: none; opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      .skills-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>About Me</h1>
+    <nav>
+      <a href="../">Home</a>
+      <a href="../books/">Bookshelf</a>
+      <a href="../movies/">Letterboxd</a>
+      <a href="../blog/">Project Blog</a>
+      <a href="../photos/">Photos</a>
+    </nav>
+  </header>
+
+  <div class="content">
+    <div class="section">
+      <h2>Hi, I'm Giovanni</h2>
+      <p>I am a versatile and detail-oriented software engineer with a strong foundation in programming, data-driven solutions, and technical problem-solving. My experience spans full product lifecycles, collaboration across technical and non-technical teams, and the development of scalable solutions for complex challenges.</p>
+      <p>I thrive in dynamic environments, quickly adapt to new tools, and bring an ownership mindset to every project I undertake. I have strong communication skills and excel at explaining products to both technical and non-technical audiences.</p>
+      <p>Currently based in New York City, I work as a Full Stack Engineer at LR Paris, where I design and implement technical solutions that integrate e-commerce platforms with marketing automation. I also apply my AI and product design skills to prototype and test innovative corporate gifting concepts.</p>
+    </div>
+
+    <div class="section">
+      <h2>Education</h2>
+      <p><strong>Drexel University, Philadelphia, PA</strong><br>
+      Bachelor of Science in Computer Engineering, Minor in Product Design<br>
+      Graduated: December 2024</p>
+      <p><strong>LanguBridge Study Abroad Program, Tokyo, Japan</strong><br>
+      Japanese Language Skills (Conversational)<br>
+      Summer 2017</p>
+    </div>
+
+    <div class="section">
+      <h2>Skills</h2>
+      <div class="skills-grid">
+        <div class="skill-category">
+          <h3>Programming</h3>
+          <ul>
+            <li>Python</li>
+            <li>JavaScript</li>
+            <li>C++, C, C#</li>
+            <li>HTML & CSS</li>
+          </ul>
+        </div>
+        <div class="skill-category">
+          <h3>Development</h3>
+          <ul>
+            <li>API Integration</li>
+            <li>Web Development</li>
+            <li>AI/ML Research</li>
+            <li>Rapid Prototyping</li>
+          </ul>
+        </div>
+        <div class="skill-category">
+          <h3>3D CAD</h3>
+          <ul>
+            <li>AutoCAD</li>
+            <li>Fusion 360</li>
+            <li>Solidworks</li>
+            <li>SketchUp, Rhino</li>
+          </ul>
+        </div>
+        <div class="skill-category">
+          <h3>Other</h3>
+          <ul>
+            <li>Technical Documentation</li>
+            <li>Cross-functional Teams</li>
+            <li>Teaching & Mentoring</li>
+            <li>Debugging & Troubleshooting</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Interests & Projects</h2>
+      <ul class="interests-list">
+        <li><strong>Hydroponic Vertical Farm</strong> — Developed electronics and software for an automated vertical farm system with enhanced safety features</li>
+        <li><strong>DSLR Camera Development</strong> — Built a custom DSLR camera from the ground up using Raspberry Pi with interchangeable lens mount</li>
+        <li><strong>Stereoscopic Photography</strong> — Created a 4-lens digital camera for capturing 'wobblegrams' with custom software</li>
+        <li><strong>In-Car Spotify Display</strong> — Designed a gesture-based Spotify interface for Tesla Model 3, later adapted into a home HiFi system</li>
+        <li><strong>Wearable Health Tech</strong> — Patent applications for AI-powered health monitoring devices and smart garments</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Get in Touch</h2>
+      <div class="contact-links">
+        <a href="mailto:gio@gi-os.com">gio@gi-os.com</a>
+        <a href="https://www.linkedin.com/in/giolupo" target="_blank">LinkedIn</a>
+        <a href="/resume.pdf" target="_blank">Resume</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
