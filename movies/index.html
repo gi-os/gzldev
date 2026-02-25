@@ -218,15 +218,27 @@
 
   <script>
     const USERNAME = 'mycatbasil';
-    const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+    const CORS_PROXIES = [
+      (url) => `https://corsproxy.io/?${encodeURIComponent(url)}`,
+      (url) => `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}`,
+    ];
     const RSS_URL = `https://letterboxd.com/${USERNAME}/rss/`;
+
+    async function fetchWithFallback(url) {
+      for (const proxy of CORS_PROXIES) {
+        try {
+          const res = await fetch(proxy(url));
+          if (res.ok) return await res.text();
+        } catch (_) {}
+      }
+      throw new Error('All CORS proxies failed');
+    }
 
     async function loadFilms() {
       const container = document.getElementById('films');
-      
+
       try {
-        const res = await fetch(CORS_PROXY + encodeURIComponent(RSS_URL));
-        const text = await res.text();
+        const text = await fetchWithFallback(RSS_URL);
         const parser = new DOMParser();
         const xml = parser.parseFromString(text, 'text/xml');
         const items = xml.querySelectorAll('item');
