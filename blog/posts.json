@@ -1,0 +1,13 @@
+[
+  {
+    "slug": "building-basilnet",
+    "title": "Building BasilNet: My Home Server Stack",
+    "date": "2025-01-10",
+    "tags": [
+      "Docker",
+      "homelab",
+      "self-hosting"
+    ],
+    "excerpt": "How I built a 15-service media server with Docker Compose, Gluetun VPN, and Home Assistant integrations."
+  }
+]

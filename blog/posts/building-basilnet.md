@@ -1,5 +1,3 @@
-# Building BasilNet: My Home Server Stack
-
 After months of iteration, I've finally settled on a Docker Compose setup that handles all my media needs without breaking a sweat. Here's the full breakdown.
 
 ## The Stack
