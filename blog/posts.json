@@ -1,5 +1,15 @@
 [
   {
+    "slug": "i-built-a-bad-dslr-on-purpose",
+    "title": "I built a bad DSLR on purpose",
+    "date": "2026-03-08",
+    "tags": [
+      "hardware",
+      "photography"
+    ],
+    "excerpt": "It took worse pictures than my phone. It's one of the most useful things I've ever built."
+  },
+  {
     "slug": "building-basilnet",
     "title": "Building BasilNet: My Home Server Stack",
     "date": "2025-01-10",
