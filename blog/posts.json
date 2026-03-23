@@ -1,5 +1,16 @@
 [
   {
+    "slug": "basilnet-a-year-later",
+    "title": "BasilNet, a year later",
+    "date": "2026-03-22",
+    "tags": [
+      "Docker",
+      "homelab",
+      "self-hosting"
+    ],
+    "excerpt": "What broke, what I'd trim, and how the media server quietly became infrastructure for everything else I build."
+  },
+  {
     "slug": "i-built-a-bad-dslr-on-purpose",
     "title": "I built a bad DSLR on purpose",
     "date": "2026-03-08",
