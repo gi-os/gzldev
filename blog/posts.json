@@ -1,5 +1,15 @@
 [
   {
+    "slug": "a-qr-scanner-and-its-desktop-twin",
+    "title": "A QR scanner, and its desktop twin",
+    "date": "2026-07-29",
+    "tags": [
+      "Light Phone",
+      "LightQR"
+    ],
+    "excerpt": "The modern world hands you addresses as QR codes and the Light Phone couldn't read them. A scanner for the phone, a generator page for every other screen."
+  },
+  {
     "slug": "basilnet-a-year-later",
     "title": "BasilNet, a year later",
     "date": "2026-03-22",
