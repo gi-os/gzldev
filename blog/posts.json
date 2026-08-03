@@ -1,5 +1,15 @@
 [
   {
+    "slug": "rewriting-the-camera",
+    "title": "Rewriting the camera",
+    "date": "2026-08-02",
+    "tags": [
+      "Light Phone",
+      "design"
+    ],
+    "excerpt": "Roll's whole design is one gesture, stolen from a contact sheet. Plus the filters that got away from me \u2014 purikura on a monochrome phone, and datamoshing experiments that mostly produce mud."
+  },
+  {
     "slug": "a-qr-scanner-and-its-desktop-twin",
     "title": "A QR scanner, and its desktop twin",
     "date": "2026-07-29",
