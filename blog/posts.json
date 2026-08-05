@@ -1,5 +1,15 @@
 [
   {
+    "slug": "roll-is-out",
+    "title": "Roll is out",
+    "date": "2026-08-05",
+    "tags": [
+      "Light Phone",
+      "Roll"
+    ],
+    "excerpt": "The camera app ships: a filter wheel on real hardware, purikura with four-shot strips, date backs, and a privacy lesson from launch day."
+  },
+  {
     "slug": "the-keylayout-file-light-left-behind",
     "title": "The keylayout file Light left behind",
     "date": "2026-08-04",
