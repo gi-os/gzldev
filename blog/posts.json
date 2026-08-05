@@ -1,5 +1,15 @@
 [
   {
+    "slug": "the-keylayout-file-light-left-behind",
+    "title": "The keylayout file Light left behind",
+    "date": "2026-08-04",
+    "tags": [
+      "Light Phone",
+      "Android"
+    ],
+    "excerpt": "The scroll wheel is just key events. Everything I learned reading Generic.kl off the phone, and the accessibility service that became BrightControl."
+  },
+  {
     "slug": "rewriting-the-camera",
     "title": "Rewriting the camera",
     "date": "2026-08-02",
