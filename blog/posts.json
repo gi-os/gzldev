@@ -1,5 +1,16 @@
 [
   {
+    "slug": "every-button-does-what-you-tell-it-to",
+    "title": "Every button does what you tell it to",
+    "date": "2026-08-06",
+    "tags": [
+      "Light Phone",
+      "BrightControl",
+      "design"
+    ],
+    "excerpt": "The follow-up to the keylayout post: BrightControl itself, why the defaults took longer than the code, and the trust problem with accessibility services."
+  },
+  {
     "slug": "roll-is-out",
     "title": "Roll is out",
     "date": "2026-08-05",
