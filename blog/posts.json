@@ -1,5 +1,15 @@
 [
   {
+    "slug": "one-column-of-scores",
+    "title": "One column of scores",
+    "date": "2026-08-07",
+    "tags": [
+      "Light Phone",
+      "BrightSports"
+    ],
+    "excerpt": "Twenty-two leagues from four keyless public APIs, in one greyscale column. How BrightSports gets scores with no account and no push."
+  },
+  {
     "slug": "every-button-does-what-you-tell-it-to",
     "title": "Every button does what you tell it to",
     "date": "2026-08-06",
