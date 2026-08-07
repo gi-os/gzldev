@@ -11,6 +11,17 @@
     "excerpt": "The follow-up to the keylayout post: BrightControl itself, why the defaults took longer than the code, and the trust problem with accessibility services."
   },
   {
+    "slug": "the-metrocard-inside-my-phone",
+    "title": "The MetroCard inside my phone",
+    "date": "2026-08-06",
+    "tags": [
+      "Light Phone",
+      "hardware",
+      "NFC"
+    ],
+    "excerpt": "I dissolved a transit card in acetone and moved its nervous system into the battery compartment. Tap-to-pay is back, sort of."
+  },
+  {
     "slug": "roll-is-out",
     "title": "Roll is out",
     "date": "2026-08-05",
