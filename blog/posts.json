@@ -10,6 +10,16 @@
     "excerpt": "The app store ships: browse on the desktop, install by QR, track updates on the phone, and import your whole Obtainium setup."
   },
   {
+    "slug": "fifteen-copies-of-the-same-file",
+    "title": "Fifteen copies of the same file",
+    "date": "2026-08-08",
+    "tags": [
+      "Light Phone",
+      "Kotlin"
+    ],
+    "excerpt": "The least interesting code I maintain is the code I'd save first in a fire. On finally building the shared library."
+  },
+  {
     "slug": "one-column-of-scores",
     "title": "One column of scores",
     "date": "2026-08-07",
