@@ -1,5 +1,16 @@
 [
   {
+    "slug": "my-bug-reports-file-themselves",
+    "title": "My bug reports file themselves",
+    "date": "2026-08-11",
+    "tags": [
+      "Light Phone",
+      "AI",
+      "tooling"
+    ],
+    "excerpt": "Shake the phone three times and the app files its own GitHub issue. Then an AI triages the queue every hour \u2014 under strict instructions that guessing is worse than waiting."
+  },
+  {
     "slug": "brightmarket-is-out",
     "title": "BrightMarket is out",
     "date": "2026-08-08",
