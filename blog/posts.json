@@ -1,5 +1,15 @@
 [
   {
+    "slug": "a-good-fork-says-thank-you",
+    "title": "A good fork says thank you",
+    "date": "2026-08-14",
+    "tags": [
+      "Light Phone",
+      "open source"
+    ],
+    "excerpt": "A lot of what I ship is other people's work with my name nearer the top than it deserves. Some rules I try to fork by."
+  },
+  {
     "slug": "my-bug-reports-file-themselves",
     "title": "My bug reports file themselves",
     "date": "2026-08-11",
