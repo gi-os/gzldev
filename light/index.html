@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Light Phone | Giovanni Lupo</title>
+  <meta name="description" content="The apps I build for the Light Phone III: Roll, BrightMarket, BrightChat, BrightControl, and the rest of the collection." />
+  <style>
+    :root {
+      --pad: 20px;
+      --hover-color: #6a2548;
+      --base-color: #000;
+    }
+
+    @font-face {
+      font-family: "GioCustom";
+      src: url("../acidic.woff2") format("woff2"),
+           url("../acidic.ttf")   format("truetype");
+      font-weight: 400 900;
+      font-style: normal;
+      font-display: swap;
+    }
+
+    html, body { margin: 0; min-height: 100%; }
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body {
+      font-family: "GioCustom", "New Century Schoolbook", "TeX Gyre Schola", serif;
+      background: #fff;
+      color: #000;
+      padding: var(--pad);
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    h1 {
+      font-size: clamp(24px, 4vw, 42px);
+      font-weight: 800;
+      margin: 0;
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+      font-size: 1em;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--base-color);
+      text-decoration: none;
+      transition: color 200ms ease;
+    }
+    nav a:hover { color: var(--hover-color); }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .intro {
+      font-size: 1.05em;
+      line-height: 1.65;
+      margin-bottom: 48px;
+    }
+
+    section {
+      border: 2px solid var(--base-color);
+      padding: 28px;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeIn 600ms ease forwards;
+    }
+    section:hover { border-color: var(--hover-color); }
+
+    section h2 {
+      font-size: 1.4em;
+      font-weight: 800;
+      margin: 0 0 4px 0;
+    }
+
+    .sub {
+      font-size: 0.85em;
+      opacity: 0.6;
+      margin-bottom: 16px;
+    }
+
+    section p {
+      font-size: 0.97em;
+      line-height: 1.65;
+      margin: 0 0 14px 0;
+    }
+    section p:last-child { margin-bottom: 0; }
+
+    a { color: var(--hover-color); }
+
+    .applist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    .applist li {
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
+      font-size: 0.95em;
+      line-height: 1.5;
+    }
+    .applist li:last-child { border-bottom: none; }
+    .applist b { font-weight: 800; }
+
+    .links {
+      display: flex;
+      gap: 16px;
+      margin-top: 16px;
+      font-size: 0.9em;
+    }
+
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @media (prefers-reduced-motion: reduce) { section { animation: none; opacity: 1; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Light Phone</h1>
+    <nav>
+      <a href="../">Home</a>
+      <a href="../books/">Bookshelf</a>
+      <a href="../movies/">Letterboxd</a>
+      <a href="../blog/">Project Blog</a>
+      <a href="../photos/">Photos</a>
+      <a href="../about/">About Me</a>
+    </nav>
+  </header>
+
+  <main>
+    <p class="intro">
+      I carry a <a href="https://www.thelightphone.com/">Light Phone III</a>,
+      a phone designed to do less. Then I couldn't leave it alone. LightOS is Android
+      underneath, apps sideload as ordinary APKs, and the hardware — the scroll wheel, the
+      camera button, the greyscale OLED — turns out to be full of possibilities nobody had
+      claimed yet. I've written or adapted about thirty apps for it so far. None of them are
+      made or endorsed by Light; they're community apps, all free and open source at
+      <a href="https://github.com/gi-os">github.com/gi-os</a>. Here are the ones I'd want
+      to explain to you if we were talking in person.
+    </p>
+
+    <section>
+      <h2>Roll</h2>
+      <div class="sub">A camera that's fun to use</div>
+      <p>
+        Roll replaces the stock Camera and Album with one app built around a single gesture:
+        the photo roll sits above the viewfinder, so you pull down to see your photos —
+        newest against the corner of the frame, older ones running up and back like a contact
+        sheet — and flick up to get back to the shutter. That's the whole navigation model.
+      </p>
+      <p>
+        The wheel works as a lens ring. There are film-style filters, date backs, and a QR
+        mode. It's a full rewrite rather than a fork, and it has
+        shipped more releases than anything else in the collection — mostly because people
+        keep sending good ideas.
+      </p>
+      <div class="links"><a href="https://github.com/gi-os/Roll">GitHub</a></div>
+    </section>
+
+    <section>
+      <h2>BrightMarket</h2>
+      <div class="sub">An app store, so the rest can exist</div>
+      <p>
+        Sideloading works on the Light Phone, but keeping fifteen sideloaded apps current
+        means checking fifteen release pages. Obtainium solves update tracking well — it's
+        just built for a normal Android, and it only knows the links you paste into it.
+        BrightMarket does the update tracking, fits this phone, and adds a catalogue on top
+        so there's somewhere to find community apps in the first
+        place. It has become the main way Light Phone III owners find and update them, which
+        I try to treat as a responsibility more than an achievement.
+      </p>
+      <p>
+        An app store on a minimalist phone is a little self-defeating — it's still an
+        infinite scrolling feed. So browsing is optional. On first launch the app asks, and
+        with Focus mode on it only shows what you have installed and what needs updating.
+      </p>
+      <p>
+        There's no server and no analytics. The backend is
+        <a href="https://github.com/gi-os/brightmarket-index">a public GitHub repo</a>: one
+        YAML file per app, an index rebuilt hourly by CI and served from GitHub Pages, and a
+        submission portal where anyone can list an app they own. Submissions are validated
+        automatically — the validator reads the applicationId out of the APK itself rather
+        than trusting the form. Download counts come from GitHub's own release statistics, so
+        the "most downloaded" sort costs nothing and tracks nobody.
+      </p>
+      <p>
+        I've gotten it wrong, too. One afternoon the GitHub API quietly returned empty
+        release lists — no error, just nothing — and my builder read that as "these apps have
+        no releases" and dropped them from the index. The fix, and the lesson, is written
+        into the repo: an app is never dropped for an answer the API failed to give.
+      </p>
+      <div class="links">
+        <a href="https://brightmarket.gzl.dev">brightmarket.gzl.dev</a>
+        <a href="https://github.com/gi-os/BrightMarket">GitHub</a>
+      </div>
+    </section>
+
+    <section>
+      <h2>BrightChat</h2>
+      <div class="sub">iMessage on a dumbphone</div>
+      <p>
+        Credit where it belongs: <a href="https://github.com/craigeley/chat">Craig Eley wrote
+        the original app</a>, which talks to a self-hosted BlueBubbles server over Tailscale
+        so no Google push is involved. My fork adds Favorites/Known/Unknown tabs, contact
+        search, and a photo viewer. Craig's original README is preserved at the
+        bottom of mine, as he wrote it. Bugs in my additions are my problem, not his.
+      </p>
+      <div class="links"><a href="https://github.com/gi-os/BrightChat">GitHub</a></div>
+    </section>
+
+    <section>
+      <h2>BrightControl</h2>
+      <div class="sub">Making the hardware work everywhere</div>
+      <p>
+        The wheel, camera button, and home button on the LPIII arrive at whichever app has
+        focus as ordinary key events — Light patched the system keylayout, and the brightness
+        ramp you get in Light's own tools is just app-layer code in those tools. In any
+        sideloaded app, the keys arrive and nothing listens. BrightControl is the missing
+        layer: an accessibility service that catches those keys everywhere, so the wheel does
+        brightness or scrolling in every app, a double-tap switches between them, and every
+        button is rebindable. Working this out meant reading the keylayout files off the
+        phone; the writeup in the README is the documentation I wish had existed.
+      </p>
+      <div class="links"><a href="https://github.com/gi-os/BrightControl">GitHub</a></div>
+    </section>
+
+    <section>
+      <h2>The plumbing</h2>
+      <div class="sub">light-common, and bug reports that file themselves</div>
+      <p>
+        Once there were fifteen apps, the same wheel-handling code existed in fifteen
+        slightly different copies, and a fix meant twenty edits. So the shared pieces —
+        hardware keys, the wheel, the type and colour system, shake-to-report — moved into
+        <a href="https://github.com/gi-os/BrightCommon">one library</a> that every app pulls
+        in as a dependency.
+      </p>
+      <p>
+        The part I use most: shake any of my apps three times and it files a bug report as a
+        GitHub issue, with the screen you were on, a build table, and a screenshot. An AI
+        agent triages the queue hourly — it diagnoses each report against the app's source,
+        ships a fix when the cause is small and provable, and hands the rest to me with its
+        notes. It's under strict instructions that guessing is worse than waiting, and the
+        rule that keeps it honest is simple: anything it can't prove, it doesn't touch.
+      </p>
+      <div class="links"><a href="https://github.com/gi-os/BrightCommon">GitHub</a></div>
+    </section>
+
+    <section>
+      <h2>The rest of the collection</h2>
+      <div class="sub">Each one a small idea, kept small</div>
+      <ul class="applist">
+        <li><b>BrightRemote</b> — an Apple TV remote that speaks Apple's Companion protocol natively.</li>
+        <li><b>BrightTransit</b> — live NYC subway arrivals for the stations you actually use.</li>
+        <li><b>LightVoice</b> — hold a key, say what you want: alarms, timers, calendar.</li>
+        <li><b>BrightWay</b> — walking and subway directions, text-first, scrolled with the wheel.</li>
+        <li><b>BrightNotebook</b> — notes, folders, a calendar, and a camera that reads a written page in.</li>
+        <li><b>BrightMusic</b> — a Spotify client, building on <a href="https://github.com/jonathancaudill">Jonathan Caudill's</a> phono.</li>
+        <li><b>BrightLibrary</b> — an ereader with manga and Calibre support, forked from FastRead.</li>
+        <li><b>BrightNews</b> — an RSS reader, building on zachattack323's LightRSS.</li>
+        <li><b>BrightThumb</b> — a one-thumb keyboard, ported from Thumb-Key.</li>
+        <li><b>BrightSports</b> — scores and standings for your followed teams.</li>
+        <li><b>BrightTip</b> — photograph a receipt and it splits the bill.</li>
+        <li><b>BrightPasses</b> — photograph a movie stub and it keeps your ticket collection.</li>
+        <li><b>BrightImport</b> — pull photos off a real camera over its Wi-Fi, into the roll.</li>
+        <li><b>BrightSync</b> — backups for every app onto my home server, one file per app.</li>
+        <li><b>BrightNoise</b> — twelve background sounds, synthesized in real time.</li>
+        <li><b>FogLight</b> — a Fog of World companion: record where you go, watch the fog clear.</li>
+        <li><b>Games</b> — solitaire, sudoku, picross. And LightBeer, which exists because it made me laugh.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Beyond the phone</h2>
+      <div class="sub">The other things I build</div>
+      <p>
+        By day I'm a systems engineer at LR Paris, where I built and run the e-commerce
+        platform behind the company's client shops. At home there's BasilNet, a self-hosted
+        server that runs my media, backups, and Home Assistant; a DSLR built from a Raspberry
+        Pi and a lens mount; a four-lens stereoscopic camera; and a senior-design vertical
+        hydroponic farm with an automated shelf elevator. Two of my ideas in AI-powered
+        health monitoring are now granted US patents.
+      </p>
+      <p>
+        If any of this is the kind of thing you'd like built, my resume is
+        <a href="../resume.pdf">here</a>.
+      </p>
+    </section>
+  </main>
+
+  <script>
+    // Stagger the section reveals
+    document.querySelectorAll('section').forEach((s, i) => {
+      s.style.animationDelay = (i * 90) + 'ms';
+    });
+  </script>
+</body>
+</html>

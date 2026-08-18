@@ -20,6 +20,8 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  flex-wrap: wrap;
+  gap: 16px 24px;
 }
     
 		:root {
@@ -132,9 +134,12 @@
 
     nav {
       display: flex;
+      flex-wrap: wrap;
       gap: 20px;
       font-size: 1em;
     }
+
+    nav a { white-space: nowrap; }
 
     nav a {
       color: var(--base-color);
@@ -305,6 +310,7 @@
       <div class="header-row">
     <h1>Welcome</h1>
     <nav>
+      <a href="../light/">Light Phone</a>
       <a href="../books/">Bookshelf</a>
       <a href="../movies/">Letterboxd</a>
       <a href="../blog/">Project Blog</a>
