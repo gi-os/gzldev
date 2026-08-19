@@ -1,5 +1,15 @@
 [
   {
+    "slug": "an-app-store-for-a-dumbphone",
+    "title": "Why I put an app store on a phone designed to have none",
+    "date": "2026-08-18",
+    "tags": [
+      "Light Phone",
+      "BrightMarket"
+    ],
+    "excerpt": "Yes, I see the irony. How BrightMarket works, why there's no server, and the afternoon I accidentally dropped everyone's apps from the index."
+  },
+  {
     "slug": "a-good-fork-says-thank-you",
     "title": "A good fork says thank you",
     "date": "2026-08-14",
