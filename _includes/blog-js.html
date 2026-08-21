@@ -70,6 +70,82 @@
     });
   }
 
+  // read / unread, the way a mail client does it. This lives in the browser only:
+  // there is no account here and no server to tell, so localStorage is the whole
+  // store, and every touch of it is wrapped because private windows throw.
+  var READKEY = 'gzl.blog.read';
+  function loadRead() {
+    try { return JSON.parse(localStorage.getItem(READKEY) || '[]'); } catch (e) { return []; }
+  }
+  function saveRead(list) {
+    try { localStorage.setItem(READKEY, JSON.stringify(list)); } catch (e) {}
+  }
+  var readList = loadRead();
+  var items = Array.prototype.slice.call(document.querySelectorAll('.item'));
+  var markall = document.getElementById('markall');
+  var unreadLabel = document.getElementById('unreadcount');
+  function isRead(url) { return readList.indexOf(url) !== -1; }
+
+  function paint() {
+    var unread = 0;
+    items.forEach(function (it) {
+      var read = isRead(it.dataset.url);
+      it.classList.toggle('read', read);
+      if (!read) unread++;
+    });
+    // The unread dot only means anything once something has been read, so a
+    // first-time visitor doesn't get seventeen dots shouting at them.
+    document.body.classList.toggle('hasread', readList.length > 0);
+    if (unreadLabel) unreadLabel.textContent = unread ? ' · ' + unread + ' unread' : '';
+    if (markall && items.length) {
+      markall.hidden = false;
+      markall.textContent = unread ? 'mark all read' : 'mark all unread';
+    }
+  }
+
+  function markRead(url) {
+    if (!url || isRead(url)) return;
+    readList.push(url);
+    saveRead(readList);
+    paint();
+  }
+
+  if (markall) {
+    markall.addEventListener('click', function () {
+      var anyUnread = items.some(function (it) { return !isRead(it.dataset.url); });
+      if (anyUnread) {
+        items.forEach(function (it) { if (!isRead(it.dataset.url)) readList.push(it.dataset.url); });
+      } else {
+        readList = [];
+      }
+      saveRead(readList);
+      paint();
+    });
+  }
+
+  paint();
+
+  // Opening a post page reads it. On the index the newest post is already sitting
+  // in the reading pane, so there it only counts once you engage with it —
+  // otherwise merely landing on /blog/ would silently burn the newest post. On a
+  // narrow screen that pane is display:none and offsetParent stays null, so
+  // nothing gets marked there either.
+  var currentPost = document.body.dataset.post;
+  if (currentPost) {
+    if (document.body.dataset.view === 'post') {
+      markRead(currentPost);
+    } else if (rs) {
+      var armed = true;
+      var settle = function () {
+        if (!armed || rs.offsetParent === null) return;
+        armed = false;
+        markRead(currentPost);
+      };
+      rs.addEventListener('scroll', function () { if (rs.scrollTop > 60) settle(); });
+      setTimeout(settle, 12000);
+    }
+  }
+
   // keep the selected post visible in the rail
   var on = document.querySelector('.item.on');
   if (on) on.scrollIntoView({ block: 'center' });

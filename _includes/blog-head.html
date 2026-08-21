@@ -36,12 +36,22 @@ a:hover { color: #000; }
 .chip { font-size: 11px; padding: 3px 9px; border: 1px solid #ddd; background: #fff; color: #000; cursor: pointer; transition: all 160ms ease; font-family: inherit; }
 .chip:hover { border-color: var(--accent); color: var(--accent); }
 .chip.on { border-color: var(--accent); background: var(--accent); color: #fff; }
+.markall { margin-left: auto; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 0; border: 0; background: none; color: #000; opacity: 0.4; cursor: pointer; font-family: inherit; }
+.markall:hover { opacity: 1; color: var(--accent); }
 .railbody { flex: 1; min-height: 0; display: flex; }
 .raillist { flex: 1; min-width: 0; overflow-y: auto; }
 .item { display: block; padding: 14px 16px 14px 13px; border-bottom: 1px solid #f0f0f0; border-left: 3px solid transparent; cursor: pointer; text-decoration: none; color: #000; transition: background 140ms ease, border-color 140ms ease; }
 .item:hover { background: #faf6f8; border-left-color: var(--accent); color: #000; }
 .item.on { background: #faf6f8; border-left-color: var(--accent); }
 .item.on .ititle { color: var(--accent); }
+/* read/unread, mail-style: unread carries a dot and full weight, read recedes */
+.ititle::before { content: ""; display: none; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); margin-right: 7px; vertical-align: 0.12em; }
+body.hasread .item:not(.read) .ititle::before { display: inline-block; }
+.item.read .ititle { font-weight: 600; opacity: 0.45; }
+.item.read .idate { opacity: 0.28; }
+.item.read .isnip { opacity: 0.32; }
+.item.read .itag { opacity: 0.45; }
+.item.read:hover .ititle, .item.read.on .ititle { opacity: 0.8; }
 .imeta { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
 .idate { font-size: 11px; letter-spacing: 0.04em; opacity: 0.5; }
 .iread { font-size: 10px; opacity: 0.35; }
