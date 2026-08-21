@@ -1,0 +1,90 @@
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="alternate" type="application/rss+xml" title="Giovanni Lupo" href="/feed.xml">
+<style>
+@font-face { font-family: "GioCustom"; src: url("/acidic.woff2") format("woff2"), url("/acidic.ttf") format("truetype"); font-weight: 400 900; font-style: normal; font-display: swap; }
+html, body { margin: 0; height: 100%; overflow: hidden; background: #fff; }
+*, *::before, *::after { box-sizing: border-box; }
+:root { --accent: #6a2548; --rail: 400px; }
+body { font-family: "GioCustom","New Century Schoolbook",serif; color: #000; }
+a { color: var(--accent); }
+a:hover { color: #000; }
+@keyframes blink { 0%, 60% { opacity: 1 } 61%, 100% { opacity: 0.15 } }
+.nobar { scrollbar-width: none; -ms-overflow-style: none; }
+.nobar::-webkit-scrollbar { width: 0; height: 0; display: none; }
+
+.shell { height: 100dvh; display: flex; flex-direction: column; }
+.topbar { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; padding: 14px 20px 12px; border-bottom: 1px solid #000; flex-wrap: wrap; }
+.brandrow { display: flex; align-items: baseline; gap: 14px; }
+.brand { font-size: 26px; font-weight: 800; letter-spacing: -0.01em; cursor: pointer; user-select: none; color: #000; text-decoration: none; }
+.brand:hover { color: var(--accent); }
+.brand span { color: var(--accent); }
+.mark { font-size: 12px; opacity: 0.5; animation: blink 2.4s steps(1) infinite; }
+.topnav { display: flex; gap: 18px; font-size: 13px; flex-wrap: wrap; }
+.topnav a { color: #000; text-decoration: none; white-space: nowrap; }
+.topnav a:hover { color: var(--accent); }
+.topnav a.rss { color: var(--accent); }
+.topnav a.rss:hover { color: #000; }
+
+.panes { flex: 1; min-height: 0; display: flex; }
+.rail { flex: 0 0 var(--rail); min-width: 0; display: flex; flex-direction: column; border-right: 1px solid #000; }
+.chips { padding: 12px 16px; border-bottom: 1px solid #e6e6e6; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.countlabel { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.45; margin-right: 4px; }
+.chip { font-size: 11px; padding: 3px 9px; border: 1px solid #ddd; background: #fff; color: #000; cursor: pointer; transition: all 160ms ease; font-family: inherit; }
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+.chip.on { border-color: var(--accent); background: var(--accent); color: #fff; }
+.railbody { flex: 1; min-height: 0; display: flex; }
+.raillist { flex: 1; min-width: 0; overflow-y: auto; }
+.item { display: block; padding: 14px 16px 14px 13px; border-bottom: 1px solid #f0f0f0; border-left: 3px solid transparent; cursor: pointer; text-decoration: none; color: #000; transition: background 140ms ease, border-color 140ms ease; }
+.item:hover { background: #faf6f8; border-left-color: var(--accent); color: #000; }
+.item.on { background: #faf6f8; border-left-color: var(--accent); }
+.item.on .ititle { color: var(--accent); }
+.imeta { display: flex; justify-content: space-between; gap: 10px; align-items: baseline; }
+.idate { font-size: 11px; letter-spacing: 0.04em; opacity: 0.5; }
+.iread { font-size: 10px; opacity: 0.35; }
+.ititle { font-size: 15px; font-weight: 800; line-height: 1.25; margin: 5px 0 4px; text-wrap: pretty; }
+.isnip { font-size: 12px; line-height: 1.5; opacity: 0.6; text-wrap: pretty; }
+.itags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 7px; }
+.itag { font-size: 10px; padding: 1px 6px; background: #f3f3f3; opacity: 0.75; }
+.minitrack { flex: 0 0 12px; border-left: 1px solid #e6e6e6; position: relative; background: #fff; }
+.minithumb { position: absolute; left: 0; right: 0; background: repeating-linear-gradient(180deg,#000 0 3px,#fff 3px 7px); border-top: 1px solid #000; border-bottom: 1px solid #000; cursor: grab; }
+
+.reader { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.progress { height: 2px; background: #eee; flex: 0 0 auto; }
+.progress div { height: 2px; background: var(--accent); width: 0; transition: width 90ms linear; }
+.readscroll { flex: 1; min-height: 0; overflow-y: auto; padding: 0 0 120px; }
+.article { max-width: 660px; margin: 0 auto; padding: 44px 32px 0; }
+.backlink { display: none; font-size: 12px; color: var(--accent); cursor: pointer; margin-bottom: 20px; text-decoration: none; }
+.pmeta { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.45; }
+.article h1 { font-size: clamp(28px,3.6vw,40px); font-weight: 800; line-height: 1.12; margin: 10px 0 14px; text-wrap: pretty; }
+.ptags { display: flex; gap: 6px; flex-wrap: wrap; padding-bottom: 22px; border-bottom: 1px solid #000; }
+.ptag { font-size: 11px; padding: 2px 8px; border: 1px solid #ddd; }
+.pbody { padding-top: 8px; }
+.pbody h2 { font-size: 19px; font-weight: 800; margin: 34px 0 10px; letter-spacing: -0.01em; }
+.pbody p { font-size: 16px; line-height: 1.72; margin: 0 0 18px; text-wrap: pretty; }
+.pbody pre { background: #f5f5f5; padding: 14px; overflow-x: auto; font-size: 13px; line-height: 1.5; }
+.pbody code { background: #f5f5f5; padding: 1px 5px; font-size: 0.88em; }
+.pbody pre code { background: none; padding: 0; }
+.pbody blockquote { border-left: 3px solid var(--accent); margin: 1.5em 0; padding-left: 1em; opacity: 0.85; }
+.pbody img { max-width: 100%; height: auto; }
+.pbody em { }
+.pager { margin-top: 56px; padding-top: 20px; border-top: 1px solid #000; display: flex; justify-content: space-between; gap: 16px; font-size: 12px; }
+.pager a { cursor: pointer; opacity: 0.7; max-width: 45%; color: #000; text-decoration: none; }
+.pager a:hover { color: var(--accent); opacity: 1; }
+.pager .older { text-align: right; margin-left: auto; }
+
+.wheeltrack { flex: 0 0 26px; border-left: 1px solid #000; position: relative; background: #fafafa; cursor: ns-resize; }
+.wheelthumb { position: absolute; left: 0; right: 0; min-height: 44px; background: repeating-linear-gradient(180deg,#000 0 6px,#fff 6px 13px); border-top: 1px solid #000; border-bottom: 1px solid #000; cursor: grab; }
+.wheelthumb:active { cursor: grabbing; }
+
+@media (max-width: 900px) {
+  :root { --rail: 100%; }
+  .wheeltrack, .minitrack { display: none; }
+  body[data-view="list"] .reader { display: none; }
+  body[data-view="post"] .rail { display: none; }
+  body[data-view="post"] .backlink { display: inline-block; }
+}
+</style>

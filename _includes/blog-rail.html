@@ -1,0 +1,26 @@
+<div class="rail">
+  <div class="chips" id="chips">
+    <span class="countlabel">{{ site.posts | size }} posts</span>
+    <button class="chip on" data-tag="">all</button>
+    {% assign all_tags = "" | split: "" %}
+    {% for post in site.posts %}{% for t in post.tags %}{% unless all_tags contains t %}{% assign all_tags = all_tags | push: t %}{% endunless %}{% endfor %}{% endfor %}
+    {% for t in all_tags %}<button class="chip" data-tag="{{ t | escape }}">{{ t }}</button>{% endfor %}
+  </div>
+  <div class="railbody">
+    <div class="raillist nobar" id="raillist">
+      {% for post in site.posts %}
+      {% assign words = post.content | strip_html | number_of_words %}
+      <a class="item{% if post.url == page.url %} on{% endif %}" href="{{ post.url }}" data-tags="{{ post.tags | join: '|' | escape }}">
+        <div class="imeta">
+          <div class="idate">{{ post.date | date: "%B %-d, %Y" }}</div>
+          <div class="iread">{{ words | divided_by: 220 | at_least: 1 }} min</div>
+        </div>
+        <div class="ititle">{{ post.title }}</div>
+        <div class="isnip">{{ post.description }}</div>
+        <div class="itags">{% for t in post.tags %}<span class="itag">{{ t }}</span>{% endfor %}</div>
+      </a>
+      {% endfor %}
+    </div>
+    <div class="minitrack" id="minitrack"><div class="minithumb" id="minithumb"></div></div>
+  </div>
+</div>
