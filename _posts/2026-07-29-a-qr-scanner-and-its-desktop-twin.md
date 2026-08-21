@@ -1,3 +1,11 @@
+---
+layout: post
+title: "A QR scanner, and its desktop twin"
+date: 2026-07-29 19:15:00 -0400
+tags: ["Light Phone","LightQR"]
+description: "The modern world hands you addresses as QR codes and the Light Phone couldn't read them. A scanner for the phone, a generator page for every other screen."
+---
+
 The modern world hands you addresses as QR codes — menus, tickets, Wi-Fi, the poster at the bus stop — and the Light Phone III shipped unable to read a single one of them. The stock camera doesn't scan. There's no browser worth typing into even if you could bear typing a URL on a 3.9-inch keyboard. So the codes just sit there, smug.
 
 [LightQR](https://github.com/gi-os/LightQR) is two small tools that meet in the middle:

@@ -1,3 +1,11 @@
+---
+layout: post
+title: "Building BasilNet: My Home Server Stack"
+date: 2025-01-10 20:15:00 -0500
+tags: ["Docker", "homelab", "self-hosting"]
+description: "How I built a 15-service media server with Docker Compose, Gluetun VPN, and Home Assistant integrations."
+---
+
 After months of iteration, I've finally settled on a Docker Compose setup that handles all my media needs without breaking a sweat. Here's the full breakdown.
 
 ## The Stack

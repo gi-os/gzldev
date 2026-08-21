@@ -1,3 +1,11 @@
+---
+layout: post
+title: "Rewriting the camera"
+date: 2026-08-02 20:10:00 -0400
+tags: ["Light Phone", "design"]
+description: "Roll's whole design is one gesture, stolen from a contact sheet. Plus the filters that got away from me — purikura on a monochrome phone, and datamoshing experiments that mostly produce mud."
+---
+
 A camera app is not a new idea. I want to say that before anything else, because [Roll](https://github.com/gi-os/Roll) is the app people bring up most, and the truth is that most of it is things every camera app has: a shutter, filters, a gallery. The only part I'd defend as mine is the layout, and even that is stolen — from paper.
 
 ## One gesture

@@ -1,3 +1,11 @@
+---
+layout: post
+title: "My bug reports file themselves"
+date: 2026-08-11 18:47:00 -0400
+tags: ["Light Phone", "AI", "tooling"]
+description: "Shake the phone three times and the app files its own GitHub issue. Then an AI triages the queue every hour — under strict instructions that guessing is worse than waiting."
+---
+
 Every app I ship for the Light Phone has the same hidden feature: shake the phone three times and it files a bug report. Not an email, not a form — a GitHub issue, opened by the app itself, with the screen you were on, a table of build and device info, the last crash log if there was one, and a screenshot. If the app crashed outright, it asks on the next launch whether to send what it caught.
 
 I built this because the alternative was worse. Bug reports for phone apps normally arrive as a Reddit comment three weeks later: "the camera thing broke." Which screen? Which version? Gone. The reporter has moved on, and honestly, fair — describing a bug is work, and nobody owes me work. So the app does the describing. The person just shakes.

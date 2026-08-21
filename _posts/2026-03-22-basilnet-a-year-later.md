@@ -1,3 +1,11 @@
+---
+layout: post
+title: "BasilNet, a year later"
+date: 2026-03-22 21:40:00 -0400
+tags: ["Docker", "homelab", "self-hosting"]
+description: "What broke, what I'd trim, and how the media server quietly became infrastructure for everything else I build."
+---
+
 A year ago I wrote up [BasilNet](/blog/building-basilnet/), my Docker home server stack, with the confidence of someone whose setup had been stable for almost three weeks. Time to report back on what survived.
 
 ## What broke, and what it taught me

@@ -1,3 +1,11 @@
+---
+layout: post
+title: "I built a bad DSLR on purpose"
+date: 2026-03-08 16:24:00 -0500
+tags: ["hardware", "photography"]
+description: "It took worse pictures than my phone. It's one of the most useful things I've ever built."
+---
+
 In late 2020 I built a DSLR from a Raspberry Pi, a sensor board, and a lens mount, and I want to be honest about the results: it took worse pictures than the phone already in my pocket. Slower to focus, worse in low light, heavier, uglier. By every measure that matters to a photograph, a failure.
 
 It's one of the most useful things I've ever built.

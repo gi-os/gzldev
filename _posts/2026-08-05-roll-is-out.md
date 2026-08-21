@@ -1,3 +1,11 @@
+---
+layout: post
+title: "Roll is out"
+date: 2026-08-05 18:30:00 -0400
+tags: ["Light Phone","Roll"]
+description: "The camera app ships: a filter wheel on real hardware, purikura with four-shot strips, date backs, and a privacy lesson from launch day."
+---
+
 Roll shipped yesterday. I wrote about [the design](/blog/rewriting-the-camera/) a few days ago — the pull-down contact sheet, why it's a rewrite — so this is the other half: what's actually in the launch build, as posted to the community.
 
 The headline feature is the wheel. The brightness wheel maps to a filter wheel, so changing looks is a physical gesture — you turn a dial on the side of a camera, the way it should be. The filters it turns through got out of hand in the best way: a Game Boy look, dithering, halftone, the old OS X Photo Booth effects, film emulations with baked-on date stamps in three styles, and purikura — the Japanese photo booth look, with dozens of settings including four-shot strips like the real booths print.

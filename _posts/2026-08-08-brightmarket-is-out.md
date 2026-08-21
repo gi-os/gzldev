@@ -1,3 +1,11 @@
+---
+layout: post
+title: "BrightMarket is out"
+date: 2026-08-08 12:45:00 -0400
+tags: ["Light Phone","BrightMarket"]
+description: "The app store ships: browse on the desktop, install by QR, track updates on the phone, and import your whole Obtainium setup."
+---
+
 BrightMarket shipped yesterday. I used Obtainium for months and it works fine — but it never felt like it belonged on this phone. Too complex, too many features aimed at a device this isn't. And it only solved half the problem: it kept apps updated, but there was still nowhere to *find* them. The honest answer to "how do I discover Light Phone apps" was a Reddit thread.
 
 So BrightMarket is two halves that meet in the middle:

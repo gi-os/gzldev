@@ -1,3 +1,11 @@
+---
+layout: post
+title: "Why I put an app store on a phone designed to have none"
+date: 2026-08-18 21:58:00 -0400
+tags: ["Light Phone", "BrightMarket"]
+description: "Yes, I see the irony. How BrightMarket works, why there's no server, and the afternoon I accidentally dropped everyone's apps from the index."
+---
+
 I am aware of how this sounds. The Light Phone III is a phone built on the idea that you should stop looking at your phone. I built an app store for it.
 
 Let me at least explain how I got here.

@@ -1,3 +1,11 @@
+---
+layout: post
+title: "Fifteen copies of the same file"
+date: 2026-08-08 20:33:00 -0400
+tags: ["Light Phone", "Kotlin"]
+description: "The least interesting code I maintain is the code I'd save first in a fire. On finally building the shared library."
+---
+
 This is a post about the least interesting code I maintain, which is also the code I'd save first in a fire.
 
 At some point I looked up and had a lot of Light Phone apps. Every one of them needs the same plumbing: handle the hardware keys, drive the scroll wheel, draw text in the phone's type and color system, run the shake-to-report machinery. And every one of them had its own copy. `LightKeys.kt` was byte-identical in fifteen repos. The wheel handling existed in about ten variants across twenty — not because ten variants were needed, but because each copy drifted a little after it was pasted.

@@ -1,3 +1,11 @@
+---
+layout: post
+title: "The MetroCard inside my phone"
+date: 2026-08-06 21:35:00 -0400
+tags: ["Light Phone","hardware","NFC"]
+description: "I dissolved a transit card in acetone and moved its nervous system into the battery compartment. Tap-to-pay is back, sort of."
+---
+
 Of everything I gave up moving to this phone, tap-to-pay was the one I actually felt. Not apps, not the camera — the turnstile. Standing at the OMNY reader fishing for a card while the person behind me radiates New York patience. The Light Phone III has NFC hardware in it, and the community keeps asking when it'll do something; so far, nothing shipped uses it. So I stopped waiting and put a MetroCard inside the phone.
 
 I posted the short version [on Reddit](https://old.reddit.com/r/LightPhone/comments/1vgb3iv/how_to_add_transit_cards_to_your_lightphone/). This is the long one.

@@ -1,3 +1,11 @@
+---
+layout: post
+title: "Every button does what you tell it to"
+date: 2026-08-06 17:52:00 -0400
+tags: ["Light Phone", "BrightControl", "design"]
+description: "The follow-up to the keylayout post: BrightControl itself, why the defaults took longer than the code, and the trust problem with accessibility services."
+---
+
 A few weeks ago I wrote about [reading the keylayout file](/blog/the-keylayout-file-light-left-behind/) and learning that the Light Phone's wheel and buttons are just key events that most apps ignore. That post was the archaeology. This one is about the app that came out of it, [BrightControl](https://github.com/gi-os/BrightControl), and the design questions that turned out to be harder than the code.
 
 ## The pitch is one sentence

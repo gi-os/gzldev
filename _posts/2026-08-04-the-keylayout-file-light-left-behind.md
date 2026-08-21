@@ -1,3 +1,11 @@
+---
+layout: post
+title: "The keylayout file Light left behind"
+date: 2026-08-04 22:18:00 -0400
+tags: ["Light Phone", "Android"]
+description: "The scroll wheel is just key events. Everything I learned reading Generic.kl off the phone, and the accessibility service that became BrightControl."
+---
+
 I want to be clear up front: I didn't discover anything here. Everything in this post was sitting in a plain text file on the phone, readable by anyone with `adb` and some patience. I just seem to be the one who wrote it down.
 
 ## The mystery

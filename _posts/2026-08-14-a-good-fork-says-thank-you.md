@@ -1,3 +1,11 @@
+---
+layout: post
+title: "A good fork says thank you"
+date: 2026-08-14 15:21:00 -0400
+tags: ["Light Phone", "open source"]
+description: "A lot of what I ship is other people's work with my name nearer the top than it deserves. Some rules I try to fork by."
+---
+
 A decent amount of what I ship for the Light Phone is other people's work with my name nearer the top than it deserves. BrightChat is [Craig Eley's chat app](https://github.com/craigeley/chat). BrightMusic builds on Jonathan Caudill's phono. BrightNews started as zachattack323's LightRSS. BrightLibrary is a FastRead fork, and BrightThumb is a port of Thumb-Key. None of these were my ideas. The community around this phone is tiny, the good ideas are unevenly distributed, and forking is how the work compounds.
 
 Which is fine — that's what open source is for. But forking has an etiquette, I've been on both ends of it now, and I have opinions.
