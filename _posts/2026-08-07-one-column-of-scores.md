@@ -3,10 +3,10 @@ layout: post
 title: "One column of scores"
 date: 2026-08-07 18:40:00 -0400
 tags: ["Light Phone","BrightSports"]
-description: "Twenty-two leagues from four keyless public APIs, in one greyscale column. How BrightSports gets scores with no account and no push."
+description: "Twenty-two leagues from four keyless public APIs, in one grayscale column. How BrightSports gets scores with no account and no push."
 ---
 
-I follow too many teams for a phone with no scores app. LightOS has no sports surface at all, and refreshing ESPN's mobile site on a 3.9-inch greyscale screen is a punishment I kept choosing anyway. So: [BrightSports](https://github.com/gi-os/BrightSports). One column of scores, grouped by day. Standings, one tab per league. A game page with first pitch, venue, TV listing, and both records. A notification when something happens to a team you follow. That's the whole app, and the restraint is the feature — on this screen, a second column is a design failure.
+I follow too many teams for a phone with no scores app. LightOS has no sports surface at all, and refreshing ESPN's mobile site on a 3.9-inch grayscale screen is a punishment I kept choosing anyway. So: [BrightSports](https://github.com/gi-os/BrightSports). One column of scores, grouped by day. Standings, one tab per league. A game page with first pitch, venue, TV listing, and both records. A notification when something happens to a team you follow. That's the whole app, and the restraint is the feature — on this screen, a second column is a design failure.
 
 ## Twenty-two leagues, zero API keys
 

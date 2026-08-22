@@ -14,7 +14,7 @@ Here's the whole design. The photo roll sits *above* the viewfinder. Pull down o
 
 That's it. That's the entire navigation model. There are no tabs, no gallery icon in a corner, no separate app to open. The camera and everything it has ever produced are one continuous surface, and you move between them the way you'd tilt a stack of prints toward yourself.
 
-I spent longer on this than on any feature. Not building it — deciding it. Every draft with more structure felt like the phone it was replacing. The Light Phone's whole argument is that a screen this size, in greyscale, can't sustain interfaces built from chrome and menus, so the interface had to be a gesture you could learn in one use and never think about again.
+I spent longer on this than on any feature. Not building it — deciding it. Every draft with more structure felt like the phone it was replacing. The Light Phone's whole argument is that a screen this size, in grayscale, can't sustain interfaces built from chrome and menus, so the interface had to be a gesture you could learn in one use and never think about again.
 
 ## Why a rewrite and not a fork
 
@@ -24,7 +24,7 @@ The wheel works as a lens ring, because a physical dial on the side of a camera 
 
 ## The filters got away from me
 
-I planned three filters. There are now more than I'm comfortable counting, and the filter picker needed its own scrolling design to hold them. In my defense, a greyscale sensor is a strange and generous canvas — with no color to protect, you can push tone curves, grain, and halftone dots much further before a photo stops feeling like a photo. Film looks with stamped date backs. Dithering that turns a shot into something a 1985 Mac would print. A Bulge lens for when a cat's face demands it. None of this is novel — film simulation is a whole industry and I'm at the hobbyist end — but the constraint makes it fresh to work in.
+I planned three filters. There are now more than I'm comfortable counting, and the filter picker needed its own scrolling design to hold them. In my defense, a grayscale sensor is a strange and generous canvas — with no color to protect, you can push tone curves, grain, and halftone dots much further before a photo stops feeling like a photo. Film looks with stamped date backs. Dithering that turns a shot into something a 1985 Mac would print. A Bulge lens for when a cat's face demands it. None of this is novel — film simulation is a whole industry and I'm at the hobbyist end — but the constraint makes it fresh to work in.
 
 The one I'm most attached to is the purikura filter. If you've ever crammed into a Japanese photo-booth, you know the look: blown-out skin, inky outlines, everything slightly a sticker. I spent a summer in Tokyo in high school and a shameful amount of it in those booths, so this one is less a filter than a memory with a tone curve. It has no business being on a monochrome dumbphone. People use it constantly.
 

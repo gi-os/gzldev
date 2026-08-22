@@ -12,7 +12,7 @@ I built this because the alternative was worse. Bug reports for phone apps norma
 
 ## The 360-pixel witness
 
-The screenshots come through greyscale and 360 pixels wide, and I expected them to be useless. They're the most valuable part of the report. A broken layout, a stuck spinner, a date that's obviously wrong — you can see it instantly, in a way no prose description gets close to. Most reports are diagnosable from the screenshot and the build table alone.
+The screenshots come through grayscale and 360 pixels wide, and I expected them to be useless. They're the most valuable part of the report. A broken layout, a stuck spinner, a date that's obviously wrong — you can see it instantly, in a way no prose description gets close to. Most reports are diagnosable from the screenshot and the build table alone.
 
 ## Then I stopped being the bottleneck
 

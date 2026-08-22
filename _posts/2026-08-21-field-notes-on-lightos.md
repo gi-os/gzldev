@@ -65,7 +65,7 @@ Standard BLE scanning works fine — [LightPods](https://github.com/gi-os/LightP
 
 ## The panel sets the rules
 
-Everything renders greyscale, and designing for it is closer to print than to normal app work. Contrast does the work color would. Patterns replace palettes — when I needed tape labels to be distinguishable in the recorder, the answer was geometry, not hue. Type carries almost everything, and LightOS's own type and spacing conventions are consistent enough that matching them makes an app feel native with no other effort.
+Everything renders grayscale, and designing for it is closer to print than to normal app work. Contrast does the work color would. Patterns replace palettes — when I needed tape labels to be distinguishable in the recorder, the answer was geometry, not hue. Type carries almost everything, and LightOS's own type and spacing conventions are consistent enough that matching them makes an app feel native with no other effort.
 
 ## The conventions nobody voted on
 
